@@ -10,7 +10,7 @@ const MAP_WIDTH = 32;                     //マップ幅
 const MAP_HEIGHT = 32;                    //マップ高さ
 const SCR_HEIGHT = 5;                     //画面のタイルサイズ高さの半分
 const SCR_WIDTH = 10;                     //画面のタイルサイズ幅の半分
-let SCROLL = 1;                         //スクロール速度
+let SCROLL = 1;                           //スクロール速度
 let gSpeed = SCROLL;                      //素早さ
 const SMOOTH = 0;                         //ドットの補完処理の値
 const START_HP = 20;                      //初期HP
@@ -18,63 +18,62 @@ const START_X = 8;                        //スタート位置x
 const START_Y = 6;                        //スタート位置y
 const TILECOLUMN = 8;                     //ドットの桁数
 const TILEROW = 8;                        //ドットの行数
-const TILESIZE = 16;
-const WNDSTYLE = "rgba(0, 0, 0, 0.5)";   //ウィンドウの色
+const TILESIZE = 16;                      //マスのサイズ
+const WNDSTYLE = "rgba(0, 0, 0, 0.5)";    //ウィンドウの色
 //const TilesizeX = 192;                  //タイルサイズX軸（ドット（＝ピクセル））
 //const TilesizeY = 192;                  //タイルサイズY軸 
 
 const gKey = new Uint8Array( 0x100 );     //キー入力バッファ
 
-let gAngle = 0;                           //プレイヤーの向き
-let gEx = 0;                              //プレイヤーの経験値
-let gHP = START_HP;                       //プレイヤーのHP
-let gMHP = START_HP;                      //プレイヤーの最大HP
-let gLv = 1;                              //プレイヤーのレベル 
-let gCursor = 0;                          //カーソル位置
-let gFrame = 0;                           //内部カウンタ
-let gWidth;                               //実画面の幅
-let gHeight;                              //実画面の高さ
-let gMessage1 = null;                     //表示メッセージの変数
-let gMessage2 = null;                     //表示メッセージの変数
-let gMessage3 = null;                     //表示メッセージの変数
-let gMessage4 = null;                     //表示メッセージの変数
-let gMoveX = 0;                           //移動量x
-let gMoveY = 0;                           //移動量y
-let gOP = 1;                              //スタート画面表示要素
-let gItem = 0;                            //所持アイテム
-let gSword = 0;                           //隠し武器要素
-let gEnforce = 0;                         //隠し強化要素
-let gOrder;                               //行動順
-let gGuard = 0;                           //門番出現要素
-let gPhase = 0;                           //戦闘フェイズ
-let gImgBoss;                             //ボス画像
-let gImgGuard1                            //門番１の画像
-let gImgGuard2                            //門番2の画像
-let gImgMidBoss;                          //中ボス画像
-let gImgMap;                              //マップ画像
-let gImgMonster;                          //モンスター画像
-let gImgTrueBoss;                         //裏ボス画像
-let IsBoss = 0;                           //ボス要素
-//let BossEvent;                            //ボス出現条件
-let IsMid_Boss = 0;                       //中ボス要素
-let IsTrueBoss = 0;                       //裏ボス画像
-//let Mi;                                   //モンスター引数
-let gSirge = 0;                            //戦闘時包囲要素
-let gTalk = 0;                                //メッセージ表示条件要素
-let T = null;                                    //モンスター引数
-let gEnemyHP ;                                //敵のHP設定
-let gEnemyMHP;                               //敵の初期HP
-let gBossHP;                              //ボスクラスのHP
-let gBossMHP;                             //ボスクラスの初期HP
-let gImgPlayer;                           //プレイヤー画像
+let gAngle = 0;                                             //プレイヤーの向き
+let gEx = 0;                                                //プレイヤーの経験値
+let gHP = START_HP;                                         //プレイヤーのHP
+let gMHP = START_HP;                                        //プレイヤーの最大HP
+let gLv = 1;                                                //プレイヤーのレベル 
+let gCursor = 0;                                            //カーソル位置
+let gFrame = 0;                                             //内部カウンタ
+let gWidth;                                                 //実画面の幅
+let gHeight;                                                //実画面の高さ
+let gMessage1 = null;                                       //表示メッセージの変数
+let gMessage2 = null;                                       //表示メッセージの変数
+let gMessage3 = null;                                       //表示メッセージの変数
+let gMessage4 = null;                                       //表示メッセージの変数
+let gMoveX = 0;                                             //移動量x
+let gMoveY = 0;                                             //移動量y
+let gOP = 1;                                                //スタート画面表示要素
+let gItem = 0;                                              //所持アイテム
+let gSword = 0;                                             //隠し武器要素
+let gEnforce = 0;                                           //隠し強化要素
+let gOrder;                                                 //行動順
+let gGuard = 0;                                             //門番出現要素
+let gPhase = 0;                                             //戦闘フェイズ
+let gImgBoss;                                               //ボス画像
+let gImgGuard1                                              //門番１の画像
+let gImgGuard2                                              //門番2の画像
+let gImgMidBoss;                                            //中ボス画像
+let gImgMap;                                                //マップ画像
+let gImgMonster;                                            //モンスター画像
+let gImgTrueBoss;                                           //裏ボス画像
+let IsBoss = 0;                                             //ボス要素
+//let BossEvent;                                            //ボス出現条件
+let IsMid_Boss = 0;                                         //中ボス要素
+let IsTrueBoss = 0;                                         //裏ボス画像
+let gSirge = 0;                                             //戦闘時包囲要素
+let gTalk = 0;                                              //メッセージ表示条件要素
+let T = null;                                               //モンスター引数
+let gEnemyHP ;                                              //敵のHP設定
+let gEnemyMHP;                                              //敵の初期HP
+let gBossHP;                                                //ボスクラスのHP
+let gBossMHP;                                               //ボスクラスの初期HP
+let gImgPlayer;                                             //プレイヤー画像
 let gPlayerX = START_X * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
 let gPlayerY = START_Y * TILESIZE + TILESIZE / 2;           //プレイヤー座標Y
-const gFileBoss = "image/monster-image/m49.png";            //ボス画像
-const gFileGuard1 = "image/monster-image/m50.png";          //門番１画像
-const gFileGuard2 = "image/monster-image/m64.png";          //門番2画像
-const gFileMap = "image/[mate]WorldMap8bit.png";            //マップ画像
-const gFileMidBoss = "image/monster-image/m79.png";         //中ボス画像
-const gFileTrueBoss = { name: '%E5%8B%87%E8%80%85', url : "image/monster-image/m72.png"};                                    //裏ボス画像
+const gFileBoss = "image/monster-image/m49.png";                                             //ボス画像
+const gFileGuard1 = "image/monster-image/m50.png";                                           //門番１画像
+const gFileGuard2 = "image/monster-image/m64.png";                                           //門番2画像
+const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
+const gFileMidBoss = "image/monster-image/m79.png";                                          //中ボス画像
+const gFileTrueBoss = { name: '%E5%8B%87%E8%80%85', url : "image/monster-image/m72.png"};    //裏ボス画像
 const gFileMonster = [
                       { name: '地獄蟲', url : "image/monster-image/m90.png"},
                       { name:'キャットボーイ', url: "image/monster-image/m69b.png"},
@@ -86,12 +85,13 @@ const gFileMonster = [
                       { name: '暗黒の騎士', url : "image/monster-image/m36.png"},
                       { name: 'オーディン', url : "image/monster-image/m62.png"},
                       { name:'ヒュドラ', url : "image/monster-image/m65.png" }
-                    ];                                    //モンスター画像
-                    //const gMonsterName = ['', '', '' ,'' , '', '', , ''];   //モンスターの名前
-const gFilePlayer = "image/Hero01_mate.png";                //プレイヤー画像
-const canvas = document.getElementById("main");             //メインキャンバスの要素
-const g = canvas.getContext( "2d" );                        //2D描画コンテキストを取得
+                    ];                                                                      //モンスター画像
+const gFilePlayer = "image/Hero01_mate.png";                                                //プレイヤー画像
 
+const canvas = document.getElementById("main");                                             //メインキャンバスの要素
+const g = canvas.getContext( "2d" );                                                        //2D描画コンテキストを取得
+
+//マス毎のエンカウント率設定
 const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];                                      //敵エンカウント確率
 
 //マップ
@@ -130,11 +130,7 @@ const gMap = [
   11,16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 9,
 ];
 
-/*if(IsBoss == 1 || IsMid_Boss == 1 || gGuard == 1 || gGuard == 3){
-  BossEvent = true;
-}*/
-
-//戦闘行動処理
+//戦闘行動処理関数
 function Action(){
   if(IsTrueBoss == 2){
     T = 10;
@@ -143,10 +139,10 @@ function Action(){
   /*console.log('モンスター番号＝ ' + T);
   console.log('敵HP = ' + gEnemyHP);
   */
- let SpA = Math.floor(Math.random() * 3);                          //会心の一撃確率
+ let SpA = Math.floor(Math.random() * 3);              //会心の一撃確率
  console.log('SpA = ' + SpA);
 
-  if(gCursor == 0){                                  //「戦う」を選択
+  if(gCursor == 0){                                    //「戦う」を選択
     if (gPhase == 2 || gPhase == 3){
       if(gOrder == 0){
         gPhase = 5;
@@ -268,7 +264,7 @@ function Action(){
         //console.log('逃走経験値 = ' + (gEnemyMHP - gEnemyHP));
         gPhase = 8;
         return;
-    } else {                        //「逃げる」失敗
+    } else {                                               //「逃げる」失敗
       setMessage('回り込まれてしまった', null);
       gPhase = 5;
       gCursor = 0;
@@ -276,26 +272,25 @@ function Action(){
       return;
     }
   };
-    gPhase ++;                                         //フェーズ経過
+    gPhase ++;                                             //フェーズ経過
     return;
 }
 
-//経験値加算
+//経験値加算関数
 function AddExp( val ) {
-  gEx += val;                                        //経験値加算
+  gEx += val;                                          //経験値加算
   setMessage(`${val} pt の経験値を獲得`, null);
-  while( gLv * ( gLv + 1) * 2 <= gEx){               //レベルアップ条件
-    gLv++;                                           //レベルアップ
-    gMHP += 4 + Math.floor( Math.random() * 3 );     //最大HP上昇(4~6)
+  while( gLv * ( gLv + 1) * 2 <= gEx){                 //レベルアップ条件
+    gLv++;                                             //レベルアップ
+    gMHP += 4 + Math.floor( Math.random() * 3 );       //最大HP上昇(4~6)
     gHP = Math.min(gHP + Math.floor(gMHP / 5), gMHP);  //レベルアップ時体力を一定回復
     gMessage2 = 'レベルが上がった！';
   }
 }
 
 function AppearEnemy(){
-  gPhase = 1;                                           //敵出現フェイズ
+  gPhase = 1;                                          //敵出現フェイズ
   //console.log(gFileMonster[T].name);
-  //gEnemyHP = T * 3 + 5;                                //敵のHP設定
   if(IsTrueBoss == 2){
     setMessage('奇声と共に', '突然何者かが襲いかかってきた！');
     return;
@@ -320,9 +315,9 @@ function AppearEnemy(){
 }
 
 function CommandFight(){
-  gPhase = 2;                //戦闘コマンド選択フェーズ
+  gPhase = 2;                                        //戦闘コマンド選択フェーズ
   setMessage('　戦う', '　逃げる');
-  gEnemyMHP = T * 3 + 5;                                //敵のHP設定
+  gEnemyMHP = T * 3 + 5;                             //敵のHP設定
   //console.log('gEnemyMHP = ' + gEnemyMHP);
    gEnemyHP = gEnemyMHP
   //console.log('gEnemyHP = ' + gEnemyHP);
@@ -345,7 +340,7 @@ function CommandFight(){
 }
 
 function CommandFightII(){
-  gPhase = 3;                //戦闘コマンド選択フェーズ
+  gPhase = 3;                                        //戦闘コマンド選択フェーズ
   setMessage('　戦う', '　逃げる');
   console.log('敵の残存HP = ' + gEnemyHP);
   //console.log('ボスの残存HP = ' + gBossHP);
@@ -401,16 +396,13 @@ function DrawFight ( g ){
     }
   }
 
-  //g.drawImage( gImgMonster, 10, 20, WIDTH, HEIGHT, WIDTH / 2.5, HEIGHT /6,  WIDTH / 2 , HEIGHT / 2);
-  //console.log(gFileMonster[Math.floor(Math.random() * gFileMonster.length)]);
 
-
-  DrawStatus(g);                                     //ステータス描画
+  DrawStatus(g);                                                                  //ステータス描画
   DrawMessage(g);
-  if( gPhase == 2 || gPhase == 3 || gPhase == 12 || gPhase == 13){                                  //戦闘フェーズがコマンド選択中の場合
+  if( gPhase == 2 || gPhase == 3 || gPhase == 12 || gPhase == 13){                //戦闘フェーズがコマンド選択中の場合
     g.font = FONT;
     g.fillStyle = FONTSTYLE;
-    g.fillText('▶︎', 40, 125 + 14 * gCursor);              //カーソル描画
+    g.fillText('▶︎', 40, 125 + 14 * gCursor);                                      //カーソル描画
   }
 }
 
@@ -430,18 +422,14 @@ function DrawOP( g ){
 
   console.log('スタート画面です');
   return;
-  //gPhase = 0;
-  //return;
 }
 
 
 
 //マップ描画処理
 function DrawField( g ){
-  //let mx = gPlayerX;                      //プレイヤーのタイル座標X
-    //let my = gPlayerY;                      //プレイヤーのタイル座標Y
-  let mx = Math.floor( gPlayerX / TILESIZE); //プレイヤーのタイル座標x
-  let my = Math.floor( gPlayerY / TILESIZE); //プレイヤーのタイル座標y
+  let mx = Math.floor( gPlayerX / TILESIZE);  //プレイヤーのタイル座標x
+  let my = Math.floor( gPlayerY / TILESIZE);  //プレイヤーのタイル座標y
   console.log('T = ' + T);
     
   for( let dy = - SCR_HEIGHT; dy <= SCR_HEIGHT; dy++){
@@ -452,8 +440,6 @@ function DrawField( g ){
     let px = ( mx + dx + MAP_WIDTH ) % 32;
        DrawTile( g, 
                 tx * TILESIZE + WIDTH / 2 - gPlayerX,
-                //(tx + 10) * TILESIZE - gPlayerX,
-                //(ty + 5 -my) * TILESIZE, 
                 ty * TILESIZE + HEIGHT / 2 - gPlayerY,
                 gMap[ py * MAP_WIDTH + px ]
                 );   
@@ -470,29 +456,21 @@ function DrawField( g ){
   
   g.fillStyle = WNDSTYLE;                             //ウィンドウの色
   g.fillRect (12, 11, 54, 50);                        //短形描画
-  DrawStatus(g);                                     //ステータス描画
+  DrawStatus(g);                                      //ステータス描画
   DrawMessage(g);
 
     
 }
 
 function DrawMain(){
-  const g = TUG.GR.mG;     //仮想画面の2D描画コンテクストを取得
+  const g = TUG.GR.mG;                               //仮想画面の2D描画コンテクストを取得
   if(gOP == 1){
     DrawOP( g );
   } else if(gPhase <= 1){
-    DrawField( g );                           //マップ描画
+    DrawField( g );                                  //マップ描画
   } else {
     DrawFight( g );
-  }
-      //g.font = FONT;                                  //文字フォントを設定
-      //g.fillText('Hello World' + gFrame, gFrame / 10, 64);    
-    
-  
-
-  
-
-                               //メッセージ描画
+  }   
 
     //デバックウィンドウ
 /*    g.fillStyle = WNDSTYLE;                             //ウィンドウの色
@@ -512,14 +490,14 @@ function DrawMessage(g){
   if(!gMessage1){                                      //メッセージ内容が存在しない場合
     return;
   }
-  g.fillStyle = WNDSTYLE;                             //ウィンドウの色
-  g.fillRect (25, 110, 270, 35);                      //短形描画
+  g.fillStyle = WNDSTYLE;                              //ウィンドウの色
+  g.fillRect (25, 110, 270, 35);                       //短形描画
   
   g.font = FONT;
-  g.fillStyle = FONTSTYLE;                            //文字色
-  g.fillText(gMessage1, 40, 125);                     //メッセージ１行目描画
+  g.fillStyle = FONTSTYLE;                             //文字色
+  g.fillText(gMessage1, 40, 125);                      //メッセージ１行目描画
   if(gMessage2){
-  g.fillText(gMessage2, 40, 140);                     //メッセージ２行目描画
+  g.fillText(gMessage2, 40, 140);                      //メッセージ２行目描画
   }
   if(gMessage3){
     g.font = "30px fantasy";
@@ -540,9 +518,9 @@ function setMessage(v1, v2){
 
 //ステータス描画
 function DrawStatus(g){
-  if (gPhase < 11 || gOP == 0){                                                     //ゲームオーバー画面以外
+  if (gPhase < 11 || gOP == 0){                                          //ゲームオーバー画面以外
     g.font = FONT;
-    g.fillStyle = FONTSTYLE;                            //文字色
+    g.fillStyle = FONTSTYLE;                                             //文字色
     g.fillText('LV.', 19, 25); DrawTextR( g, gLv, 61, 25);               //レヴェル描画
     g.fillText('HP', 19, 39); DrawTextR( g, gHP, 61, 39);                //HP描画
     g.fillText('EX.', 19, 53); DrawTextR( g, gEx, 61, 53);               //経験値描画
@@ -562,19 +540,15 @@ function DrawTile( g, x , y, idx){
   g.drawImage( gImgMap, ix, iy, TILESIZE, TILESIZE,  x, y, TILESIZE, TILESIZE);
 };
 
-/*function  gNumberFilemonster(){
-  Mi = Math.floor(Math.random() * gFileMonster.length) ;          //モンスター引数
-} */
-
 function GameOver(){
   if(gCursor == 0){                                  //「戦う」を選択
-      if(IsBoss == 1){                      //ボスに負けた場合
+      if(IsBoss == 1){                               //ボスに負けた場合
         IsBoss = 0;
       }
-      if(IsMid_Boss == 1){                  //中ボスに負けた場合
+      if(IsMid_Boss == 1){                           //中ボスに負けた場合
         IsMid_Boss = 0;
       }
-      if(IsTrueBoss == 2){                  //裏ボスに負けた場合
+      if(IsTrueBoss == 2){                           //裏ボスに負けた場合
         IsTrueBoss = 1;
       }
       if(gGuard == 1){
@@ -587,13 +561,13 @@ function GameOver(){
       gHP = Math.round(gMHP / 3);
       gPhase = 13;
     }
-    if(gCursor == 1) {
-      gAngle = 0;                           //プレイヤーの向き
-      gEx = 0;                              //プレイヤーの経験値
-      gHP = START_HP;                       //プレイヤーのHP
-      gMHP = START_HP;                      //プレイヤーの最大HP
-      gLv = 1;                              //プレイヤーのレベル 
-      gCursor = 0;                          //カーソル位置
+    if(gCursor == 1) {                               //初期化処理
+      gAngle = 0;
+      gEx = 0;  
+      gHP = START_HP; 
+      gMHP = START_HP;
+      gLv = 1;                                         
+      gCursor = 0;                                    
       IsBoss = 0;
       IsMid_Boss = 0;
       IsTrueBoss = 0;
@@ -601,8 +575,8 @@ function GameOver(){
       gGuard = 0;
       gEnforce = 0;
 
-      gPlayerX = START_X * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
-      gPlayerY = START_Y * TILESIZE + TILESIZE / 2;           //プレイヤー座標Y
+      gPlayerX = START_X * TILESIZE + TILESIZE / 2;  //プレイヤー座標X
+      gPlayerY = START_Y * TILESIZE + TILESIZE / 2;  //プレイヤー座標Y
 
       gPhase = 13;
     }
@@ -611,13 +585,13 @@ function GameOver(){
 }
 
 function LoadImage(){
-  gImgBoss = new Image(); gImgBoss.src = gFileBoss; //ボス画像読み込み
-  gImgTrueBoss = new Image(); gImgTrueBoss.src = gFileTrueBoss.url; //ボス画像読み込み
-  gImgGuard1 = new Image(); gImgGuard1.src = gFileGuard1;    //門番画像読み込み
-  gImgGuard2 = new Image(); gImgGuard2.src = gFileGuard2;    //門番画像読み込み
-  gImgMidBoss = new Image(); gImgMidBoss.src = gFileMidBoss; //中ボス画像読み込み
-  gImgMap = new Image(); gImgMap.src = gFileMap; //マップ画像読み込み
-  gImgPlayer = new Image(); gImgPlayer.src = gFilePlayer; //プレイヤー画像読み込み
+  gImgBoss = new Image(); gImgBoss.src = gFileBoss;                 //ボス画像読み込み
+  gImgTrueBoss = new Image(); gImgTrueBoss.src = gFileTrueBoss.url; //裏ボス画像読み込み
+  gImgGuard1 = new Image(); gImgGuard1.src = gFileGuard1;           //門番画像読み込み
+  gImgGuard2 = new Image(); gImgGuard2.src = gFileGuard2;           //門番画像読み込み
+  gImgMidBoss = new Image(); gImgMidBoss.src = gFileMidBoss;        //中ボス画像読み込み
+  gImgMap = new Image(); gImgMap.src = gFileMap;                    //マップ画像読み込み
+  gImgPlayer = new Image(); gImgPlayer.src = gFilePlayer;           //プレイヤー画像読み込み
 }
 
 function TickField(){
@@ -634,11 +608,11 @@ function TickField(){
       gmEffect();
     } else if( gKey[39]) {
       gAngle = 2;
-      gMoveX= 2;                                                        //右
+      gMoveX= 2;                                                           //右
       gmEffect();
     } else if( gKey[40]) {
       gAngle = 0; 
-      gMoveY = 2;                                                        //下
+      gMoveY = 2;                                                          //下
       gmEffect();
     };
   gPlayerX += gMoveX * (SCROLL * 0.7);
@@ -646,13 +620,13 @@ function TickField(){
 
   function gmEffect() {
     //移動後のタイル座標判定
-    let fmx = Math.floor(( gPlayerX + gMoveX)/ TILESIZE );  //移動後のタイル座標X
+    let fmx = Math.floor(( gPlayerX + gMoveX)/ TILESIZE );                    //移動後のタイル座標X
     let fmy = Math.floor(( (gPlayerY + gMoveY) + TILESIZE / 3 ) / TILESIZE);  //移動後のタイル座標Y
-    fmx += MAP_WIDTH;                                       //マップループ処理
-    fmx %= MAP_WIDTH;                                       //マップループ処理
-    fmy += MAP_HEIGHT;                                      //マップループ処理
-    fmy %= MAP_HEIGHT;                                      //マップループ処理
-    let fm = gMap[ fmy * MAP_WIDTH + fmx];                    //タイル番号
+    fmx += MAP_WIDTH;                                                         //マップループ処理
+    fmx %= MAP_WIDTH;                                                         //マップループ処理
+    fmy += MAP_HEIGHT;                                                        //マップループ処理
+    fmy %= MAP_HEIGHT;                                                        //マップループ処理
+    let fm = gMap[ fmy * MAP_WIDTH + fmx];                                    //タイル番号
     //console.log(fm);
     if(fm <= 2 || fm == 4 || fm == 5 || fm == 11){
       gTalk = 0;
@@ -694,26 +668,27 @@ function TickField(){
         AppearEnemy();
      }
     }
-    if ((fm == 8) || (fm == 7) || (fm == 14)|| (fm == 15) ){                                            //侵入不可地形の場合
-      gMoveX = 0;                                          //移動禁止
+    if ((fm == 8) || (fm == 7) || (fm == 14)|| (fm == 15) ){                   //侵入不可地形の場合
+      gMoveX = 0;                                                              //移動禁止
       gMoveY = 0;
-      //console.log('移動禁止');
+      console.log('移動禁止');
     }
     if((fm == 4) || (fm == 11)) {
-      parseInt(gMoveX /= 2, 10);                             //スローダウン
+      parseInt(gMoveX /= 2, 10);                                              //スローダウン
       parseInt(gMoveY /= 2, 10);
-      //console.log('slow down');
+      console.log('slow down');
     }
     if(fm == 5 && gHP < gMHP){
-      if(Math.random() * 20 < 1){                            //ランダムで体力回復
-      gHP += Math.floor(gMHP / 20); 
+      if(Math.random() * 20 < 1){                                             //ランダムで体力回復
+      gHP += Math.floor(gMHP / 20);
+      console.log('ランダムで体力回復');
       }
     }
     if(fm == 16){
       gPlayerX += TILESIZE;
       gPlayerY += TILESIZE;
       setMessage('強い流れに押し流される', null);
-      //console.log('渦潮');
+      console.log('渦潮');
     } 
     if(fm == 9) {
       if(gHP == 1){
@@ -724,7 +699,7 @@ function TickField(){
         gHP = Math.floor( gHP/4 ) + gHP % 4;
       }
       setMessage('猛毒に身体が蝕まれる', null);
-      //console.log('毒')                                    // HPが1の場合は0を代入、HPが2<=4ならば1を代入、HPが5以上ならば4で割った商+余りを代入
+      console.log('毒')                                    // HPが1の場合は0を代入、HPが2<=4ならば1を代入、HPが5以上ならば4で割った商+余りを代入
     }
     if(fm == 10){
       if(gHP == 1){
@@ -733,7 +708,7 @@ function TickField(){
         gHP = 1;
       }
       setMessage('マグマが身体を焼く', null);
-      //console.log('マグマ')                                 // HPに0を代入
+      console.log('マグマ')                                 // HPに0を代入
     } 
     if (fm == 12){
       if(gTalk == 0){
@@ -762,7 +737,7 @@ function TickField(){
         gMHP += 100;
         gEnforce = 1;
       }
-      //console.log('ワープ')
+      console.log('ワープ')
     }
     if(fm == 17){
       if(gTalk == 0){
@@ -801,7 +776,7 @@ function TickField(){
       }
     }
     if(( 368 <= gPlayerX && gPlayerX <= 385 ) && ( 228 <= gPlayerY && gPlayerY <= 246)){
-      if(gItem == 0){                                    //カギ未所持の場合
+      if(gItem == 0){                                                           //カギ未所持の場合
         gPlayerY -= TILESIZE;                                                   //一マス上へ移動
         setMessage ('扉が閉ざされている', 'カギが必要なようだ');
       } else if(gItem == 1 && gGuard < 4){
@@ -814,11 +789,12 @@ function TickField(){
 
     }
     if((400 <= gPlayerX && gPlayerX <= 414) && (28 <= gPlayerY && gPlayerY <= 42) && (gItem == 0 && gGuard == 2)){
-      gItem = 1;                                            //カギ入手処理
+      gItem = 1;                                                                //カギ入手処理
       setMessage ('” 魔王城へのカギ ” を手に入れた', null);
     }
     if(24 <= fm && fm <= 26){
-      gHP = gMHP;                                           //街で休憩
+      gHP = gMHP;                                                               //街で休憩
+      console.log('休憩');
     }
     if(fm == 26){
       if(gTalk == 0 || gTalk == 1){
@@ -865,15 +841,15 @@ function TickField(){
 function Wmprint(){
   DrawMain();
 
-  const g = canvas.getContext( "2d" );              //2D描画コンテキストを取得
+  const g = canvas.getContext( "2d" );                                                                     //2D描画コンテキストを取得
   g.drawImage( TUG.GR.mCanvas, 0, 0, TUG.GR.mCanvas.width, TUG.GR.mCanvas.height, 0, 0, gWidth, gHeight);  //仮想画面のイメージを実画面へ転送
 };
 
-function WmSize(){  //ブラウザサイズ変更イベント
+function WmSize(){                    //ブラウザサイズ変更イベント
   canvas.width = window.innerWidth;   //キャンバスの幅をブラウザの幅に変更
   canvas.height = window.innerHeight; //キャンバスの高さをブラウザの高さに変更
 
-  const g = canvas.getContext( "2d" );              //2D描画コンテキストを取得
+  const g = canvas.getContext( "2d" );                            //2D描画コンテキストを取得
   g.imageSmoothingEnabled = g.msImageSmoothingEnabled = SMOOTH;   //ドットの補完処理
   
 
@@ -893,7 +869,7 @@ TUG.onTimer =  function( dif ){
   if( !gMessage1 ){
     while( dif -- ){
       gFrame++                  //内部カウンタを追加
-      TickField();                 //フィールド進行処理
+      TickField();              //フィールド進行処理
     }
   }
   Wmprint();
@@ -920,7 +896,7 @@ window.onkeydown = function(ev){
     return;
   }
 
-  if( gPhase == 1){             //敵が現れた 
+  if( gPhase == 1){                                        //敵が現れた 
     console.log('現在' + gPhase + 'ターン');
     gCursor = 0;
     CommandFight();
@@ -929,24 +905,24 @@ window.onkeydown = function(ev){
   if (gPhase == 2){ 
     console.log('現在' + gPhase + 'ターン');
     CommandFight();
-    if( c == 13 || c == 90){    //Enterキー、またはZキーの場合
+    if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
       //console.log('gOrder =' + gOrder );
-      Action();                  //戦闘行動処理
+      Action();                                            //戦闘行動処理
       } else {
-         gCursor = 1 - gCursor;    //カーソル移動
+         gCursor = 1 - gCursor;                            //カーソル移動
       }
       return;
   }
   if (gPhase == 3){ 
     console.log('現在' + gPhase + 'ターン');
     CommandFightII();
-    if( c == 13 || c == 90){    //Enterキー、またはZキーの場合
+    if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
       //console.log('gOrder =' + gOrder );
-      Action();                  //戦闘行動処理
+      Action();                                            //戦闘行動処理
       } else {
-         gCursor = 1 - gCursor;    //カーソル移動
+         gCursor = 1 - gCursor;                            //カーソル移動
       }
       return;
   }
@@ -965,7 +941,7 @@ window.onkeydown = function(ev){
 
   if(gPhase == 6){
     console.log('現在' + gPhase + 'ターン');
-    CommandFightII();               //戦闘コマンド
+    CommandFightII();                                      //戦闘コマンド
     return;
   }
 
@@ -1059,13 +1035,13 @@ window.onkeydown = function(ev){
     setMessage('    コンティニュー', '    はじめから');
     gMessage3 = 'Game Over';
       console.log('現在' + gPhase + 'ターン');
-    if( c == 13 || c == 90){    //Enterキー、またはZキーの場合
+    if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       console.log('エンターボタン押下');
       GameOver();
       gPhase = 13;
     } else {
       console.log('カーソル移動');
-      gCursor = 1 - gCursor;    //カーソル移動
+      gCursor = 1 - gCursor;                               //カーソル移動
     }
   }
 
@@ -1081,7 +1057,7 @@ window.onkeydown = function(ev){
 
   if (gPhase == 14){
     console.log('現在' + gPhase + 'ターン');
-    if( c == 13 || c == 90){    //Enterキー、またはZキーの場合
+    if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       console.log('エンターボタン押下');
       gOP = 0;
       gPhase = 0;
@@ -1103,7 +1079,7 @@ window.onkeyup = function(ev){
 window.onload = function(){
   LoadImage();
 
-  WmSize();          //画面サイズ初期化
+  WmSize();                                                 //画面サイズ初期化
   window.addEventListener("resize", function(){WmSize()});  //ブラウザサイズ変更時にWmSize関数を呼び出してサイズ調整
   TUG.init();
 }
