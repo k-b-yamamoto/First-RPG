@@ -55,7 +55,6 @@ let gImgMap;                                                //マップ画像
 let gImgMonster;                                            //モンスター画像
 let gImgTrueBoss;                                           //裏ボス画像
 let IsBoss = 0;                                             //ボス要素
-//let BossEvent;                                            //ボス出現条件
 let IsMid_Boss = 0;                                         //中ボス要素
 let IsTrueBoss = 0;                                         //裏ボス画像
 let gSirge = 0;                                             //戦闘時包囲要素
@@ -132,6 +131,7 @@ const gMap = [
 
 //戦闘行動処理関数
 function Action(){
+  BossEvent();
   if(IsTrueBoss == 2){
     T = 10;
   }
@@ -191,7 +191,7 @@ function Action(){
         }
       }
       
-      if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
+      if(IsBossClass){
         gBossHP -= Math.max(d, -1);
         if(gBossHP <= 0){
           gPhase = 7;
@@ -257,7 +257,7 @@ function Action(){
     }
   };
   if(gCursor == 1){
-    if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
+    if(IsBossClass){
       setMessage('逃げることができない！', null);
       gPhase = 5;
       gCursor = 0;
@@ -316,6 +316,13 @@ function AppearEnemy(){
     return;
   }
   setMessage ('魔物が襲いかかってきた！', null);            //ランダムエンカウント
+}
+
+function BossEvent(){
+  if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
+    IsBossClass = true;
+  }
+  return;
 }
 
 function CommandFight(){
@@ -979,7 +986,7 @@ window.onkeydown = function(ev){
       AddExp(Math.max( gEnemyMHP - gEnemyHP, 0));
       gCursor = 0;
       }
-    } else if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
+    } else if(IsBossClass){
       AddExp(gBossMHP);
     } else {
     AddExp((T + 1)* 3 + Math.floor(Math.random() * 4));
