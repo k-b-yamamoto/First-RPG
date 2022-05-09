@@ -185,11 +185,11 @@ function Action(){
           gMessage1 = '会心の一撃！';
         }
       } else {
-      setMessage('勇者の攻撃！', gFileMonster[T].name + 'に ' + d + ' のダメージ！');
-      if (gSword == 1 && SpA == 0){
-        gMessage1 = '会心の一撃！';
+        setMessage('勇者の攻撃！', gFileMonster[T].name + 'に ' + d + ' のダメージ！');
+        if (gSword == 1 && SpA == 0){
+          gMessage1 = '会心の一撃！';
+        }
       }
-    }
       
       if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
         gBossHP -= Math.max(d, -1);
@@ -204,12 +204,15 @@ function Action(){
           gPhase = 7;
           return;
         }
+      }
+      console.log('gOrder = ' + gOrder);
       if(gOrder == 0){
         gPhase = 6;
+        //console.log('ループを脱します');
+        return;
       } else {
         gPhase = 5;
-      }
-      return;
+        return;
       }
     }
     if (gPhase == 5){
@@ -245,8 +248,9 @@ function Action(){
         gPhase = 10;                                                //死亡フェイズ
       } else if(gOrder > 0 || gSirge == 1) {                        //自分が先制攻撃した場合と逃げるコマンドで回り込まれた場合
         gSirge = 0;
-        gPhase = 6;
+        gPhase = 6;                                                 //戦闘コマンドへループ
       } else {
+        //console.log('gSirge = ' + gSirge);
         gPhase = 4;
       }
       return;
@@ -907,7 +911,7 @@ window.onkeydown = function(ev){
     CommandFight();
     if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
-      //console.log('gOrder =' + gOrder );
+      console.log('gOrder =' + gOrder );
       Action();                                            //戦闘行動処理
       } else {
          gCursor = 1 - gCursor;                            //カーソル移動
@@ -919,7 +923,7 @@ window.onkeydown = function(ev){
     CommandFightII();
     if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
-      //console.log('gOrder =' + gOrder );
+      console.log('gOrder =' + gOrder );
       Action();                                            //戦闘行動処理
       } else {
          gCursor = 1 - gCursor;                            //カーソル移動
