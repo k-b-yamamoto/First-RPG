@@ -226,7 +226,7 @@ function Action(){
       } else {
       setMessage( gFileMonster[T].name + 'の攻撃！', d + ' のダメージ！');
       }
-      if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
+      if(IsBossClass){
         gHP -= dSP;
       } else {
         gHP -= d;
