@@ -54,6 +54,7 @@ let gImgMidBoss;                                            //中ボス画像
 let gImgMap;                                                //マップ画像
 let gImgMonster;                                            //モンスター画像
 let gImgTrueBoss;                                           //裏ボス画像
+let IsBossClass = false;                                    //ボス出現判定要素
 let IsBoss = 0;                                             //ボス要素
 let IsMid_Boss = 0;                                         //中ボス要素
 let IsTrueBoss = 0;                                         //裏ボス画像
@@ -74,17 +75,18 @@ const gFileMap = "image/[mate]WorldMap8bit.png";                                
 const gFileMidBoss = "image/monster-image/m79.png";                                          //中ボス画像
 const gFileTrueBoss = { name: '%E5%8B%87%E8%80%85', url : "image/monster-image/m72.png"};    //裏ボス画像
 const gFileMonster = [
-                      { name: '地獄蟲', url : "image/monster-image/m90.png"},
-                      { name:'キャットボーイ', url: "image/monster-image/m69b.png"},
-                      { name: 'スフィンクス', url : "image/monster-image/m63.png"},
-                      { name: 'カルゴラ', url : "image/monster-image/m89.png"},
-                      { name:'サタン', url : "image/monster-image/m61.png"},
-                      { name: 'ナイトドラゴン', url : "image/monster-image/m87.png"}, 
-                      { name: '金剛の騎士', url : "image/monster-image/m19.png"},
-                      { name: '暗黒の騎士', url : "image/monster-image/m36.png"},
-                      { name: 'オーディン', url : "image/monster-image/m62.png"},
-                      { name:'ヒュドラ', url : "image/monster-image/m65.png" }
-                    ];                                                                      //モンスター画像
+  { name: '地獄蟲', url : "image/monster-image/m90.png"},
+  { name:'キャットボーイ', url: "image/monster-image/m69b.png"},
+  { name: 'スフィンクス', url : "image/monster-image/m63.png"},
+  { name: 'カルゴラ', url : "image/monster-image/m89.png"},
+  { name:'サタン', url : "image/monster-image/m61.png"},
+  { name: 'ナイトドラゴン', url : "image/monster-image/m87.png"}, 
+  { name: '金剛の騎士', url : "image/monster-image/m19.png"},
+  { name: '暗黒の騎士', url : "image/monster-image/m36.png"},
+  { name: 'オーディン', url : "image/monster-image/m62.png"},
+  { name:'ヒュドラ', url : "image/monster-image/m65.png" }
+];                                                                      //モンスター画像
+
 const gFilePlayer = "image/Hero01_mate.png";                                                //プレイヤー画像
 
 const canvas = document.getElementById("main");                                             //メインキャンバスの要素
@@ -140,7 +142,7 @@ function Action(){
   console.log('敵HP = ' + gEnemyHP);
   */
  let SpA = Math.floor(Math.random() * 3);              //会心の一撃確率
- console.log('SpA = ' + SpA);
+ //console.log('SpA = ' + SpA);
 
   if(gCursor == 0){                                    //「戦う」を選択
     if (gPhase == 2 || gPhase == 3){
@@ -150,45 +152,31 @@ function Action(){
         gPhase = 4;
       }
     }
-    if (gSword == 2){
-      d += 30;
-    }
-    if (gSword == 1 && SpA == 0){
-      d += 50;
-    }
+    Sword(gSword);
+    d += swordAttack;
+    //console.log('装備攻撃力' + swordAttack + 'が加算されました');
+
     if (gPhase == 4){
       if( d <= 0){
         setMessage('ミス！', '攻撃を外した');
       } else if(IsBoss == 1){
         setMessage('勇者の攻撃！', '魔王デマオン に ' + d + ' のダメージ！');
-        if (gSword == 1 && SpA == 0){
-          gMessage1 = '会心の一撃！';
-        }
       } else if(IsTrueBoss == 2){
           setMessage('勇者の攻撃！', gFileTrueBoss.name +  ' に ' + d + ' のダメージ！');
-          if (gSword == 1 && SpA == 0){
-            gMessage1 = '会心の一撃！';
-          }
       } else if(IsMid_Boss == 1){
         setMessage('勇者の攻撃！', '薄氷の王女 に ' + d + ' のダメージ！');
-        if (gSword == 1 && SpA == 0){
-          gMessage1 = '会心の一撃！';
-        }
       } else if(gGuard == 1){
         setMessage('勇者の攻撃！', '魔塔の番犬 に ' + d + ' のダメージ！');
-        if (gSword == 1 && SpA == 0){
-          gMessage1 = '会心の一撃！';
-        }
       } else if(gGuard == 3){
         setMessage('勇者の攻撃！', '魔王城の門番 に ' + d + ' のダメージ！');
-        if (gSword == 1 && SpA == 0){
-          gMessage1 = '会心の一撃！';
-        }
       } else {
         setMessage('勇者の攻撃！', gFileMonster[T].name + 'に ' + d + ' のダメージ！');
-        if (gSword == 1 && SpA == 0){
-          gMessage1 = '会心の一撃！';
-        }
+      }
+      if (swordAttack == 50){
+        gMessage1 = '会心の一撃！';
+      }
+      if (swordAttack == 100){
+        gMessage1 = '奇跡の一撃!!';
       }
       
       if(IsBossClass){
@@ -205,10 +193,10 @@ function Action(){
           return;
         }
       }
-      console.log('gOrder = ' + gOrder);
+      //console.log('gOrder = ' + gOrder);
       if(gOrder == 0){
         gPhase = 6;
-        console.log('ループを脱します');
+        //console.log('ループを脱します');
         return;
       } else {
         gPhase = 5;
@@ -353,7 +341,7 @@ function CommandFight(){
 function CommandFightII(){
   gPhase = 3;                                        //戦闘コマンド選択フェーズ
   setMessage('　戦う', '　逃げる');
-  console.log('敵の残存HP = ' + gEnemyHP);
+  //console.log('敵の残存HP = ' + gEnemyHP);
   //console.log('ボスの残存HP = ' + gBossHP);
 }
 
@@ -385,8 +373,8 @@ function DrawFight ( g ){
              Math.abs( gPlayerY / TILESIZE - START_Y);
         if( Math.random() * 5 < 1){
           T = Math.min(Math.floor( T / gFileMonster.length + T % gFileMonster.length), gFileMonster.length -1);         //敵強化＋上限処理
-          console.log('乱数変更');
-          console.log('モンスター番号＝ ' + T);
+          //console.log('乱数変更');
+          //console.log('モンスター番号＝ ' + T);
         } else {
           T = Math.floor(Math.min(T / Math.floor(TILESIZE / 3), gFileMonster.length - 1));
           //console.log('モンスター番号＝ ' + T);
@@ -396,7 +384,7 @@ function DrawFight ( g ){
           T = Math.min(T + 1, gFileMonster.length - 1);
         }
         if((288 <= gPlayerX && gPlayerX <= 450) && (276 <= gPlayerY && gPlayerY <= 428)){
-          console.log('判定強化');
+          //console.log('判定強化');
           T = Math.min(T + (1 + Math.floor(Math.random() * 5)), gFileMonster.length - 1);
         }
         //console.log(gFileMonster[T].name);
@@ -431,7 +419,7 @@ function DrawOP( g ){
   g.fillStyle = FONTSTYLE;
   g.fillText('▶︎', 40, 125 + 14 * gCursor);              //カーソル描画
 
-  console.log('スタート画面です');
+  //console.log('スタート画面です');
   return;
 }
 
@@ -441,7 +429,7 @@ function DrawOP( g ){
 function DrawField( g ){
   let mx = Math.floor( gPlayerX / TILESIZE);  //プレイヤーのタイル座標x
   let my = Math.floor( gPlayerY / TILESIZE);  //プレイヤーのタイル座標y
-  console.log('T = ' + T);
+  //console.log('T = ' + T);
     
   for( let dy = - SCR_HEIGHT; dy <= SCR_HEIGHT; dy++){
     let ty = my + dy;
@@ -773,13 +761,13 @@ function TickField(){
     }
     if((240 <= gPlayerX && gPlayerX <= 254) && (363 <= gPlayerY && gPlayerY <= 376)){
       if(gTalk == 0){
-        if (IsBoss == 2 && gSword < 2){
+        if (IsBoss == 3 && gSword < 2){
           setMessage('" 勇者のつるぎ "を見つけた！', '攻撃力が上がった');
           gSword = 2;
         } else if (gSword == 0 && gLv < 10){
           setMessage('" 奇跡のつるぎ "を見つけた！', '会心の一撃を放てるようになった');
           gSword = 1;
-        } else if( gSword >= 1 ){
+        } else if( gSword > 0 ){
           setMessage('元の装備に戻した', null);
           gSword = 0;
         }
