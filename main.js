@@ -1,7 +1,5 @@
 'use strict';
 
-const CHRHEIGHT = 16;                     //キャラの高さ
-const CHRWIDTH =16;                       //キャラの幅
 const FONT = "12px fantasy";              //使用フォント
 const FONTSTYLE = "#ffffff";              //文字色
 const WIDTH = 320;                        //仮想画面の幅を設定
@@ -11,25 +9,17 @@ const MAP_HEIGHT = 32;                    //マップ高さ
 const SCR_HEIGHT = 5;                     //画面のタイルサイズ高さの半分
 const SCR_WIDTH = 10;                     //画面のタイルサイズ幅の半分
 let SCROLL = 1;                           //スクロール速度
-let gSpeed = SCROLL;                      //素早さ
 const SMOOTH = 0;                         //ドットの補完処理の値
-const START_HP = 20;                      //初期HP
 const START_X = 8;                        //スタート位置x
 const START_Y = 6;                        //スタート位置y
 const TILECOLUMN = 8;                     //ドットの桁数
 const TILEROW = 8;                        //ドットの行数
 const TILESIZE = 16;                      //マスのサイズ
 const WNDSTYLE = "rgba(0, 0, 0, 0.5)";    //ウィンドウの色
-//const TilesizeX = 192;                  //タイルサイズX軸（ドット（＝ピクセル））
-//const TilesizeY = 192;                  //タイルサイズY軸 
 
 const gKey = new Uint8Array( 0x100 );     //キー入力バッファ
 
 let gAngle = 0;                                             //プレイヤーの向き
-let gEx = 0;                                                //プレイヤーの経験値
-let gHP = START_HP;                                         //プレイヤーのHP
-let gMHP = START_HP;                                        //プレイヤーの最大HP
-let gLv = 1;                                                //プレイヤーのレベル 
 let gCursor = 0;                                            //カーソル位置
 let gFrame = 0;                                             //内部カウンタ
 let gWidth;                                                 //実画面の幅
@@ -41,19 +31,10 @@ let gMessage4 = null;                                       //表示メッセー
 let gMoveX = 0;                                             //移動量x
 let gMoveY = 0;                                             //移動量y
 let gOP = 1;                                                //スタート画面表示要素
-let gItem = 0;                                              //所持アイテム
-let gSword = 0;                                             //隠し武器要素
-let gEnforce = 0;                                           //隠し強化要素
+
 let gOrder;                                                 //行動順
 let gGuard = 0;                                             //門番出現要素
 let gPhase = 0;                                             //戦闘フェイズ
-let gImgBoss;                                               //ボス画像
-let gImgGuard1                                              //門番１の画像
-let gImgGuard2                                              //門番2の画像
-let gImgMidBoss;                                            //中ボス画像
-let gImgMap;                                                //マップ画像
-let gImgMonster;                                            //モンスター画像
-let gImgTrueBoss;                                           //裏ボス画像
 let IsBossClass = false;                                    //ボス出現判定要素
 let IsBoss = 0;                                             //ボス要素
 let IsMid_Boss = 0;                                         //中ボス要素
@@ -61,33 +42,9 @@ let IsTrueBoss = 0;                                         //裏ボス画像
 let gSirge = 0;                                             //戦闘時包囲要素
 let gTalk = 0;                                              //メッセージ表示条件要素
 let T = null;                                               //モンスター引数
-let gEnemyHP ;                                              //敵のHP設定
-let gEnemyMHP;                                              //敵の初期HP
-let gBossHP;                                                //ボスクラスのHP
-let gBossMHP;                                               //ボスクラスの初期HP
-let gImgPlayer;                                             //プレイヤー画像
+let BN;                                                     //ボスクラス引数
 let gPlayerX = START_X * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
 let gPlayerY = START_Y * TILESIZE + TILESIZE / 2;           //プレイヤー座標Y
-const gFileBoss = "image/monster-image/m49.png";                                             //ボス画像
-const gFileGuard1 = "image/monster-image/m50.png";                                           //門番１画像
-const gFileGuard2 = "image/monster-image/m64.png";                                           //門番2画像
-const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
-const gFileMidBoss = "image/monster-image/m79.png";                                          //中ボス画像
-const gFileTrueBoss = { name: '%E5%8B%87%E8%80%85', url : "image/monster-image/m72.png"};    //裏ボス画像
-const gFileMonster = [
-  { name: '地獄蟲', url : "image/monster-image/m90.png"},
-  { name:'キャットボーイ', url: "image/monster-image/m69b.png"},
-  { name: 'スフィンクス', url : "image/monster-image/m63.png"},
-  { name: 'カルゴラ', url : "image/monster-image/m89.png"},
-  { name:'サタン', url : "image/monster-image/m61.png"},
-  { name: 'ナイトドラゴン', url : "image/monster-image/m87.png"}, 
-  { name: '金剛の騎士', url : "image/monster-image/m19.png"},
-  { name: '暗黒の騎士', url : "image/monster-image/m36.png"},
-  { name: 'オーディン', url : "image/monster-image/m62.png"},
-  { name:'ヒュドラ', url : "image/monster-image/m65.png" }
-];                                                                      //モンスター画像
-
-const gFilePlayer = "image/Hero01_mate.png";                                                //プレイヤー画像
 
 const canvas = document.getElementById("main");                                             //メインキャンバスの要素
 const g = canvas.getContext( "2d" );                                                        //2D描画コンテキストを取得
@@ -96,6 +53,8 @@ const g = canvas.getContext( "2d" );                                            
 const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];                                      //敵エンカウント確率
 
 //マップ
+let gImgMap;                                                //マップ画像
+const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
 const gMap = [
   0, 0, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 11,
   11, 11, 11, 11, 11, 11, 8, 8, 8, 8, 8, 8,  8, 8, 8,  8, 8, 8, 8, 8, 8, 8, 8, 11,   6,   7,   6, 11, 8, 8, 8, 8,
@@ -134,6 +93,7 @@ const gMap = [
 //戦闘行動処理関数
 function Action(){
   BossEvent();
+  setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
   if(IsTrueBoss == 2){
     T = 10;
   }
@@ -141,9 +101,6 @@ function Action(){
   /*console.log('モンスター番号＝ ' + T);
   console.log('敵HP = ' + gEnemyHP);
   */
- let SpA = Math.floor(Math.random() * 3);              //会心の一撃確率
- //console.log('SpA = ' + SpA);
-
   if(gCursor == 0){                                    //「戦う」を選択
     if (gPhase == 2 || gPhase == 3){
       if(gOrder == 0){
@@ -159,16 +116,8 @@ function Action(){
     if (gPhase == 4){
       if( d <= 0){
         setMessage('ミス！', '攻撃を外した');
-      } else if(IsBoss == 1){
-        setMessage('勇者の攻撃！', '魔王デマオン に ' + d + ' のダメージ！');
-      } else if(IsTrueBoss == 2){
-          setMessage('勇者の攻撃！', gFileTrueBoss.name +  ' に ' + d + ' のダメージ！');
-      } else if(IsMid_Boss == 1){
-        setMessage('勇者の攻撃！', '薄氷の王女 に ' + d + ' のダメージ！');
-      } else if(gGuard == 1){
-        setMessage('勇者の攻撃！', '魔塔の番犬 に ' + d + ' のダメージ！');
-      } else if(gGuard == 3){
-        setMessage('勇者の攻撃！', '魔王城の門番 に ' + d + ' のダメージ！');
+      } else if(IsBossClass){
+        setMessage('勇者の攻撃！', gFileBossClass[BN].name + 'に ' + d + ' のダメージ！');
       } else {
         setMessage('勇者の攻撃！', gFileMonster[T].name + 'に ' + d + ' のダメージ！');
       }
@@ -207,30 +156,16 @@ function Action(){
       //console.log('ターン5開始時の敵HP = ' + gEnemyHP);
 
       let d = GetDamage( T + 2);
-      let dSP = 0;                                                  //ボス級用ダメージ計算要素
-      if(IsBoss == 1){
-        dSP = Math.floor( 20 + (1 + Math.random() * 21));
-        setMessage('魔王デマオン の攻撃！ ' + dSP + ' のダメージ！');
-      } else if(IsMid_Boss == 1){
-        dSP = Math.floor( 5 + (1 + Math.random() * 11));
-        setMessage('薄氷の王女 の攻撃！ ' + dSP + ' のダメージ！');
-      } else if(IsTrueBoss == 2){
-        dSP = Math.floor( 20 + (1 + Math.random() * 81));
-        setMessage( gFileTrueBoss.name + ' の攻撃！ ' + dSP + ' のダメージ！');
-      } else if(gGuard == 1){
-        dSP = Math.floor( 3 + (1 + Math.random() * 18));
-        setMessage('魔塔の番犬 の攻撃！ ' + dSP + ' のダメージ！');
-      } else if(gGuard == 3){
-        dSP = Math.floor( 8 + (1 + Math.random() * 9));
-        setMessage('魔王城の門番 の攻撃！ ' + dSP + ' のダメージ！');
-      } else {
-      setMessage( gFileMonster[T].name + 'の攻撃！', d + ' のダメージ！');
-      }
       if(IsBossClass){
+        BossPower(BN);
+        console.log('dSP = ' + dSP);
+        setMessage( gFileBossClass[BN].name + 'の攻撃！', dSP + ' のダメージ！');
         gHP -= dSP;
       } else {
+      setMessage( gFileMonster[T].name + 'の攻撃！', d + ' のダメージ！');
         gHP -= d;
       }
+
       if (gHP <= 0){                                               //プレイヤーが死亡した場合
         gHP = 0;
         gPhase = 10;                                                //死亡フェイズ
@@ -283,32 +218,21 @@ function AddExp( val ) {
 function AppearEnemy(){
   gPhase = 1;                                          //敵出現フェイズ
   //console.log(gFileMonster[T].name);
-  if(IsTrueBoss == 2){
-    setMessage('奇声と共に', '突然何者かが襲いかかってきた！');
-    return;
+  BossEvent();
+  if(IsBossClass){
+    setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard); //BN取得
+    getBossMessage(BN, gPhase);                            //メッセージ取得
+    setMessage(M1, M2);                                    //メッセージ表示
+  } else {
+    setMessage ('魔物が襲いかかってきた！', null);            //ランダムエンカウント
   }
-  if (IsBoss == 1){
-    setMessage('「一人とは愚かな。看取る者なく消えるがいい」', '" 魔王デマオン "が現れた！');
-    return;
-  }
-  if(IsMid_Boss == 1){
-    setMessage('「お前一人で私の相手になるとでも？」', '" 薄氷の王女"が現れた');
-    return;
-  }
-  if(gItem == 0 && gGuard == 1){
-    setMessage('「ここ・・・通さナイ・・・」', '” 魔塔の番犬 ”が現れた');
-    return;
-  }
-  if(gItem == 1 && gGuard == 3){
-    setMessage('「俺様の門をくぐれると思ったか！」', '" 魔王城の門番 "が現れた');
-    return;
-  }
-  setMessage ('魔物が襲いかかってきた！', null);            //ランダムエンカウント
 }
 
 function BossEvent(){
   if(IsBoss == 1 || IsMid_Boss == 1 || IsTrueBoss == 2 || gGuard == 1 || gGuard == 3){
     IsBossClass = true;
+  } else {
+    IsBossClass = false;
   }
   return;
 }
@@ -316,25 +240,13 @@ function BossEvent(){
 function CommandFight(){
   gPhase = 2;                                        //戦闘コマンド選択フェーズ
   setMessage('　戦う', '　逃げる');
-  gEnemyMHP = T * 3 + 5;                             //敵のHP設定
-  //console.log('gEnemyMHP = ' + gEnemyMHP);
-   gEnemyHP = gEnemyMHP
-  //console.log('gEnemyHP = ' + gEnemyHP);
-  if(IsTrueBoss == 2){
-    gBossMHP = 300;
-    gBossHP = gBossMHP;
-  } else if (IsBoss == 1){
-    gBossMHP = 100;
-    gBossHP = gBossMHP;
-  } else if(IsMid_Boss == 1){
-    gBossMHP = 40;
-    gBossHP = gBossMHP;
-  } else if(gGuard == 1){
-    gBossMHP = 25;
-    gBossHP = gBossMHP;
-  } else if(gGuard == 3){
-    gBossMHP = 35;
-    gBossHP = gBossMHP;
+  if(IsBossClass){
+    setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
+    setBossHP(BN);
+  } else {
+    setEnemyHp(T);
+    //console.log('gEnemyMHP = ' + gEnemyMHP);
+    //console.log('gEnemyHP = ' + gEnemyHP);
   }
 }
 
@@ -356,42 +268,13 @@ function DrawFight ( g ){
   g.fillRect(0, 0, WIDTH, HEIGHT);                   //画面全体を矩形描画
 
   if( gPhase < 8){                                   //敵が生存している場合
-    if(IsBoss == 1 || IsBoss == 2){
-      g.drawImage( gImgBoss, WIDTH / 2 - gImgBoss.width / 2.4, HEIGHT / 2 - gImgBoss.height / 2.4, gImgBoss.width / 1.2, gImgBoss.height / 1.2);
-    } else if(IsMid_Boss == 1 || IsMid_Boss == 2){
-      g.drawImage( gImgMidBoss, WIDTH / 2 - gImgBoss.width / 4, HEIGHT / 2 - gImgBoss.height / 4, gImgBoss.width / 2, gImgBoss.height / 2);
-    } else if(IsTrueBoss == 2 || IsTrueBoss == 3){
-      g.drawImage( gImgTrueBoss, WIDTH / 2 - gImgTrueBoss.width / 4, HEIGHT / 2 - gImgTrueBoss.height / 4, gImgTrueBoss.width / 2, gImgTrueBoss.height / 2);
-    } else if( gGuard == 1){
-      g.drawImage( gImgGuard1, WIDTH / 2 - gImgGuard1.width / 4, HEIGHT / 2 - gImgGuard1.height / 4, gImgGuard1.width / 2, gImgGuard1.height / 2);
-    } else if( gGuard == 3){
-      g.drawImage( gImgGuard2, WIDTH / 2 - gImgGuard2.width / 4, HEIGHT / 2 - gImgGuard2.height / 4, gImgGuard2.width / 2, gImgGuard2.height / 2);
-    } else{
+    if(IsBossClass){
+      setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
+      DrawBossClass(BN, g);
+    } else {
       //モンスターの描画
-      if(T === null){
-         T = Math.abs( gPlayerX / TILESIZE - START_X) +
-             Math.abs( gPlayerY / TILESIZE - START_Y);
-        if( Math.random() * 5 < 1){
-          T = Math.min(Math.floor( T / gFileMonster.length + T % gFileMonster.length), gFileMonster.length -1);         //敵強化＋上限処理
-          //console.log('乱数変更');
-          //console.log('モンスター番号＝ ' + T);
-        } else {
-          T = Math.floor(Math.min(T / Math.floor(TILESIZE / 3), gFileMonster.length - 1));
-          //console.log('モンスター番号＝ ' + T);
-        }
-        if((332 <= gPlayerX && gPlayerX <= 430) && (12 <= gPlayerY && gPlayerY <= 104)){
-          //console.log('判定強化');
-          T = Math.min(T + 1, gFileMonster.length - 1);
-        }
-        if((288 <= gPlayerX && gPlayerX <= 450) && (276 <= gPlayerY && gPlayerY <= 428)){
-          //console.log('判定強化');
-          T = Math.min(T + (1 + Math.floor(Math.random() * 5)), gFileMonster.length - 1);
-        }
-        //console.log(gFileMonster[T].name);
-        //console.log(gFileMonster[T].url);
-      } 
-      gImgMonster = new Image(); gImgMonster.src = gFileMonster[T].url; //モンスター画像読み込み    
-      g.drawImage( gImgMonster, WIDTH / 2 - gImgMonster.width / 4, HEIGHT / 2 - gImgMonster.height / 4, gImgMonster.width / 2, gImgMonster.height / 2);
+      setMonsterNumber();
+      DrawMonster(T, g);
     }
   }
 
@@ -449,9 +332,7 @@ function DrawField( g ){
     g.fillRect( WIDTH / 2 - 1, 0, 2, HEIGHT);*/         //中心線
 
     //プレイヤーの描画
-  g.drawImage( gImgPlayer,
-               (gFrame >> 3 & 1) * CHRWIDTH, gAngle * CHRHEIGHT, CHRWIDTH, CHRHEIGHT,
-               WIDTH / 2 - CHRWIDTH / 2, HEIGHT / 2 - CHRHEIGHT + TILESIZE / 2, CHRWIDTH, CHRHEIGHT);
+    DrawHero(g);
   
   g.fillStyle = WNDSTYLE;                             //ウィンドウの色
   g.fillRect (12, 11, 54, 50);                        //短形描画
@@ -540,7 +421,7 @@ function DrawTile( g, x , y, idx){
 };
 
 function GameOver(){
-  if(gCursor == 0){                                  //「戦う」を選択
+  if(gCursor == 0){                                  //「コンティニュー」を選択
       if(IsBoss == 1){                               //ボスに負けた場合
         IsBoss = 0;
       }
@@ -548,7 +429,7 @@ function GameOver(){
         IsMid_Boss = 0;
       }
       if(IsTrueBoss == 2){                           //裏ボスに負けた場合
-        IsTrueBoss = 1;
+        IsTrueBoss = 4;
       }
       if(gGuard == 1){
         gGuard -= 1;
@@ -558,21 +439,20 @@ function GameOver(){
         gGuard -= 1;
       }
       gHP = Math.round(gMHP / 3);
+      BN = null;
       gPhase = 13;
     }
     if(gCursor == 1) {                               //初期化処理
+      StartStatus();
       gAngle = 0;
-      gEx = 0;  
-      gHP = START_HP; 
-      gMHP = START_HP;
-      gLv = 1;                                         
       gCursor = 0;                                    
       IsBoss = 0;
       IsMid_Boss = 0;
       IsTrueBoss = 0;
       gItem = 0;
       gGuard = 0;
-      gEnforce = 0;
+      gSword = 0;
+      BN = null;
 
       gPlayerX = START_X * TILESIZE + TILESIZE / 2;  //プレイヤー座標X
       gPlayerY = START_Y * TILESIZE + TILESIZE / 2;  //プレイヤー座標Y
@@ -584,13 +464,7 @@ function GameOver(){
 }
 
 function LoadImage(){
-  gImgBoss = new Image(); gImgBoss.src = gFileBoss;                 //ボス画像読み込み
-  gImgTrueBoss = new Image(); gImgTrueBoss.src = gFileTrueBoss.url; //裏ボス画像読み込み
-  gImgGuard1 = new Image(); gImgGuard1.src = gFileGuard1;           //門番画像読み込み
-  gImgGuard2 = new Image(); gImgGuard2.src = gFileGuard2;           //門番画像読み込み
-  gImgMidBoss = new Image(); gImgMidBoss.src = gFileMidBoss;        //中ボス画像読み込み
   gImgMap = new Image(); gImgMap.src = gFileMap;                    //マップ画像読み込み
-  gImgPlayer = new Image(); gImgPlayer.src = gFilePlayer;           //プレイヤー画像読み込み
 }
 
 function TickField(){
@@ -614,8 +488,11 @@ function TickField(){
       gMoveY = 2;                                                          //下
       gmEffect();
     };
-  gPlayerX += gMoveX * (SCROLL * 0.7);
-  gPlayerY += gMoveY * (SCROLL * 0.7);
+  gPlayerX += gMoveX * SCROLL;
+  gPlayerY += gMoveY * SCROLL;
+  setInterval(gPlayerX = Math.round(gPlayerX), 2000);
+  setInterval(gPlayerY = Math.round(gPlayerY), 2000);
+  
 
   function gmEffect() {
     //移動後のタイル座標判定
@@ -628,12 +505,16 @@ function TickField(){
     let fm = gMap[ fmy * MAP_WIDTH + fmx];                                    //タイル番号
     //console.log(fm);
     if(fm <= 2 || fm == 4 || fm == 5 || fm == 11){
+      if(IsTrueBoss == 4){
+        IsTrueBoss = 1;
+      }
       gTalk = 0;
     }
     if(( 16 <= gPlayerX && gPlayerX <= 32) && ( 160 <= gPlayerY && gPlayerY <= 190)){
       if(IsTrueBoss == 1){
         IsTrueBoss ++;
         AppearEnemy();
+      } else if(IsTrueBoss == 4){
       } else {
         setMessage('行き止まりだ', '波さえも静まりかえっている');
       }
@@ -673,8 +554,10 @@ function TickField(){
       console.log('移動禁止');
     }
     if((fm == 4) || (fm == 11)) {
-      parseInt(gMoveX /= 2, 10);                                              //スローダウン
-      parseInt(gMoveY /= 2, 10);
+      //parseInt(gMoveX /= 2, 10);                                              //スローダウン
+      //parseInt(gMoveY /= 2, 10);
+      gMoveX /= 2;
+      gMoveY /= 2;
       console.log('slow down');
     }
     if(fm == 5 && gHP < gMHP){
@@ -906,7 +789,7 @@ window.onkeydown = function(ev){
     CommandFight();
     if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
-      console.log('gOrder =' + gOrder );
+      //console.log('gOrder =' + gOrder );
       Action();                                            //戦闘行動処理
       } else {
          gCursor = 1 - gCursor;                            //カーソル移動
@@ -918,7 +801,7 @@ window.onkeydown = function(ev){
     CommandFightII();
     if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
       gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
-      console.log('gOrder =' + gOrder );
+      //console.log('gOrder =' + gOrder );
       Action();                                            //戦闘行動処理
       } else {
          gCursor = 1 - gCursor;                            //カーソル移動
@@ -946,22 +829,22 @@ window.onkeydown = function(ev){
 
   if (gPhase == 7){
     console.log('現在' + gPhase + 'ターン');
-    if(IsBoss == 1){
-      setMessage('" 魔王デマオン "をやっつけた！', null);
-    } else if(IsMid_Boss == 1){
-      setMessage('" 薄氷の王女 "をやっつけた！', null);
-    } else if(gGuard == 1){
-      setMessage('" 魔塔の番犬 "をやっつけた！', null);
-    } else if(gGuard == 3){
-      setMessage('" 魔王城の門番 "をやっつけた！', null);
-    } else if(IsTrueBoss == 2){
-      setMessage(gFileTrueBoss.name + 'が動きを止めた', null);
+    setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
+    //console.log('BN = ' + BN);
+    if(BN != null){
+      if(BN == 4){
+        setMessage(gFileBossClass[BN].name + 'が動きを止めた', null);
+      } else if(BN < 4){
+        setMessage(`" ${gFileBossClass[BN].name} "をやっつけた！`, null);
+      }
     } else {
-    setMessage(gFileMonster[T].name + 'をやっつけた！', null);
+      //console.log('T = ' + T);
+      setMessage(gFileMonster[T].name + 'をやっつけた！', null);     
     }
     gPhase = 8;
     return;
   }
+  
   if (gPhase == 8){
     console.log('現在' + gPhase + 'ターン');
     //console.log('gBossHP = ' + gBossMHP);
@@ -997,20 +880,24 @@ window.onkeydown = function(ev){
 
   if (gPhase == 9){
     console.log('現在' + gPhase + 'ターン');
-    T = null;  
+    T = null;
+    setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
+    console.log('BN = ' + BN);
+    if(BN){
+      getBossMessage(BN, gPhase);
+      setMessage(M1, M2);
+    }
     if(IsTrueBoss == 3){
-      setMessage('「%E5%AF%82%E3%81%97%E3%81%84」', '何かを呟いてそれは消えていった');
       IsTrueBoss ++;
       IsTrueBoss = 0;
     }if(IsBoss == 2){
-      setMessage('魔王を倒し', '世界に平和が訪れた');
       IsBoss ++;
       IsTrueBoss = 1;
     }
     if(IsMid_Boss == 2){
-      setMessage('「デマオン•••悲しまないで」', '薄氷の王女は風に消えていった');
       IsMid_Boss ++;
     }
+    BN = null;
     gPhase = 0;
     return;
   }
@@ -1035,11 +922,11 @@ window.onkeydown = function(ev){
     gMessage3 = 'Game Over';
       console.log('現在' + gPhase + 'ターン');
     if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-      console.log('エンターボタン押下');
+      //console.log('エンターボタン押下');
       GameOver();
       gPhase = 13;
     } else {
-      console.log('カーソル移動');
+      //console.log('カーソル移動');
       gCursor = 1 - gCursor;                               //カーソル移動
     }
   }
@@ -1060,6 +947,7 @@ window.onkeydown = function(ev){
       console.log('エンターボタン押下');
       gOP = 0;
       gPhase = 0;
+      StartStatus();
       return;
     }
   }
