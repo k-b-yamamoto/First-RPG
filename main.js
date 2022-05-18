@@ -49,47 +49,6 @@ let gPlayerY = START_Y * TILESIZE + TILESIZE / 2;           //プレイヤー座
 const canvas = document.getElementById("main");                                             //メインキャンバスの要素
 const g = canvas.getContext( "2d" );                                                        //2D描画コンテキストを取得
 
-//マス毎のエンカウント率設定
-const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];                                      //敵エンカウント確率
-
-//マップ
-let gImgMap;                                                //マップ画像
-const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
-const gMap = [
-  0, 0, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 11,
-  11, 11, 11, 11, 11, 11, 8, 8, 8, 8, 8, 8,  8, 8, 8,  8, 8, 8, 8, 8, 8, 8, 8, 11,   6,   7,   6, 11, 8, 8, 8, 8,
-  8, 8, 11,  0,  0, 11, 8, 8, 8, 8, 8, 11, 11, 11, 11, 8, 8, 8, 8, 8, 11, 11, 11, 11, 7, 23, 7, 11, 8, 8, 8, 8,
-  8, 8, 11,  0,  0, 11,11,11,11,11,11, 11,  4,  4, 11, 11,8, 8, 8, 8, 11, 12, 11, 11, 6, 31, 6, 11, 8, 8, 8, 8,
-  8, 8, 11, 11,  0,  1, 1, 1, 1, 1, 1,  1,  4,  4,  0, 11, 8, 8, 8, 11,11, 3, 11, 11, 6, 11, 6, 11, 8, 8, 8, 8, 
-  8, 8,  8, 11,  0,  1, 1, 1, 1, 1, 25, 26, 4,  4,  0, 11,11,11,11, 11, 3, 3, 11,  4, 4, 11,11, 11, 8, 8, 8, 8, 
-  8, 8,  8, 11, 11,  1, 1, 5, 5, 5,  1,  1, 1,  4,  4, 15, 4, 4, 15, 1, 2, 2, 2, 1, 1, 1, 1, 11, 8, 8, 8, 8, 8, 8,
-  8, 8,  11, 11, 11, 11, 5, 1, 1, 1, 1, 1, 4, 4, 19, 20, 4, 4, 1, 1, 1, 1, 1, 1, 1, 11, 8, 8, 8, 8,
-  8, 8, 8, 8, 8, 8, 8, 11, 1, 1, 1, 1, 1, 1, 4, 4, 27, 28, 4, 4, 1, 1, 1, 1, 1, 1, 1, 11, 8, 8, 8, 8, 
-  8, 8, 8, 8, 8, 8, 8, 11, 1, 5, 1, 1, 1, 1, 4, 15, 4, 4, 15, 4, 1, 1, 1, 1, 1, 1, 1, 11, 8, 8, 8, 8, 
-  8, 8, 8, 8, 8, 8, 11,11, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 11, 8, 8, 8, 8, 
-  8, 8, 8, 8, 8, 11, 11, 1, 1, 5, 1, 1, 2, 2, 6, 0, 6, 0, 6, 0, 6, 0, 0, 0, 1, 5, 5, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 8, 11, 1, 1, 1, 5, 1, 1, 2, 2, 1, 24, 25, 26, 1, 6, 0, 0, 0, 5, 5, 5, 11, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 8, 11, 11, 11, 24, 5, 1, 1, 1, 1, 0, 0, 0, 1, 6, 0, 0, 0, 0, 5, 5, 5, 11, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 8, 8, 8, 11, 11, 5, 11, 11, 17, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 23, 5, 5, 5, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 8, 8, 8, 8, 11, 5, 11, 8, 11, 1, 1, 3, 7, 3, 1, 1, 15, 9, 9, 31, 9, 9, 15, 11, 11, 11, 11, 11, 
-  8, 35, 8, 8, 8, 8, 8, 8, 11, 11, 11,  8, 11, 1, 1, 3, 7, 3, 1, 15, 1, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 11, 
-  8, 35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 11, 1, 1, 4, 7, 1, 15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 1, 11, 11, 
-  8, 35, 8, 8, 8, 8, 8, 8, 8, 8, 11, 11, 1, 1, 1, 4, 7, 15, 2, 2, 10, 10, 10, 10, 10, 10, 2, 11, 11, 15, 11, 8, 
-  8, 35, 8, 8, 11, 11, 11, 11, 11, 11, 1, 1, 1, 1, 0, 0, 15, 0, 0, 2, 10, 10, 10, 10, 10, 10, 2, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 9, 0, 0, 2, 10, 10, 21, 22, 10, 10, 2, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 11, 11, 11, 1, 1, 1, 1, 1, 1, 1, 0, 15, 9, 0, 1, 2, 10, 10, 29, 30, 10, 10, 2, 11, 8, 8, 8, 8, 
-  8, 35, 8, 8, 16, 8, 11, 7, 14, 14, 1, 1, 1, 1, 0, 15, 9, 0, 1, 2, 10, 10, 35, 10, 10, 10, 2, 11, 11, 11, 8, 8, 
-  8, 35, 11, 11, 11, 11, 7, 5, 5, 5, 16, 1, 1, 1, 7, 3, 15, 0, 1, 2, 10, 10, 35, 10, 10, 10, 2, 1, 1, 11, 8, 8, 
-  8, 8, 8, 11, 11, 7, 1, 5, 5, 5, 16, 1, 1, 7, 1, 1, 1, 15, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 11, 8, 8, 
-  8, 8, 8, 8, 11, 7, 16, 5, 13, 5, 16, 1, 11, 11, 11, 11, 11, 1, 15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 8, 8, 
-  8, 8, 8, 8, 11,11,16, 5, 5, 5, 16, 11, 11, 8, 8, 11, 1, 1, 1, 15, 1, 1, 11, 1, 1, 1, 1, 1, 1, 11, 8, 8, 
-  8, 8, 8, 8, 8, 11, 16, 16, 16, 16, 16, 1, 11, 11, 11, 11, 1, 1, 1, 1, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 8, 
-  8, 8, 8, 8, 8, 8, 11, 1, 1, 1, 1, 1, 1, 1, 16, 11, 1, 1, 11, 11, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 33, 8, 
-  8, 8, 8, 8, 8, 8, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 1, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 33,8, 
-  16,16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,  8, 11, 11, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 0, 11, 
-  11,16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 9,
-];
-
 //戦闘行動処理関数
 function Action(){
   BossEvent();
@@ -306,48 +265,17 @@ function DrawOP( g ){
   return;
 }
 
-
-
-//マップ描画処理
-function DrawField( g ){
-  let mx = Math.floor( gPlayerX / TILESIZE);  //プレイヤーのタイル座標x
-  let my = Math.floor( gPlayerY / TILESIZE);  //プレイヤーのタイル座標y
-  //console.log('T = ' + T);
-    
-  for( let dy = - SCR_HEIGHT; dy <= SCR_HEIGHT; dy++){
-    let ty = my + dy;
-    let py = ( my + dy + MAP_HEIGHT ) % 32;
-    for( let dx = - SCR_WIDTH; dx <= SCR_WIDTH; dx++){
-    let tx = mx + dx;
-    let px = ( mx + dx + MAP_WIDTH ) % 32;
-       DrawTile( g, 
-                tx * TILESIZE + WIDTH / 2 - gPlayerX,
-                ty * TILESIZE + HEIGHT / 2 - gPlayerY,
-                gMap[ py * MAP_WIDTH + px ]
-                );   
-      }
-    }
-    /*g.fillStyle = "#ff0000";
-    g.fillRect( 0, HEIGHT / 2 - 1, WIDTH, 2);
-    g.fillRect( WIDTH / 2 - 1, 0, 2, HEIGHT);*/         //中心線
-
-    //プレイヤーの描画
-    DrawHero(g);
-  
-  g.fillStyle = WNDSTYLE;                             //ウィンドウの色
-  g.fillRect (12, 11, 54, 50);                        //短形描画
-  DrawStatus(g);                                      //ステータス描画
-  DrawMessage(g);
-
-    
-}
-
 function DrawMain(){
   const g = TUG.GR.mG;                               //仮想画面の2D描画コンテクストを取得
   if(gOP == 1){
     DrawOP( g );
   } else if(gPhase <= 1){
     DrawField( g );                                  //マップ描画
+    DrawHero(g);                                     //プレイヤーの描画
+    g.fillStyle = WNDSTYLE;                             //ウィンドウの色
+    g.fillRect (12, 11, 54, 50);                        //短形描画
+    DrawStatus(g);                                      //ステータス描画
+    DrawMessage(g);   
   } else {
     DrawFight( g );
   }   
@@ -398,7 +326,7 @@ function setMessage(v1, v2){
 
 //ステータス描画
 function DrawStatus(g){
-  if (gPhase < 11 || gOP == 0){                                          //ゲームオーバー画面以外
+  if (gPhase < 11 && gOP == 0){                                          //ゲームオーバー画面以外
     g.font = FONT;
     g.fillStyle = FONTSTYLE;                                             //文字色
     g.fillText('LV.', 19, 25); DrawTextR( g, gLv, 61, 25);               //レヴェル描画
@@ -438,9 +366,9 @@ function GameOver(){
       if(gGuard == 3){
         gGuard -= 1;
       }
+      gPhase = 13;
       gHP = Math.round(gMHP / 3);
       BN = null;
-      gPhase = 13;
     }
     if(gCursor == 1) {                               //初期化処理
       StartStatus();
@@ -474,251 +402,45 @@ function TickField(){
   } else if( gKey[37]) {
       gAngle = 1; 
       gMoveX = -2;                                                         //左
-      gmEffect();
+      landJudge(gMoveX, gMoveY);
     } else if( gKey[38]) {
       gAngle = 3; 
       gMoveY = - 2;                                                        //上
-      gmEffect();
+      landJudge(gMoveX, gMoveY);
     } else if( gKey[39]) {
       gAngle = 2;
       gMoveX= 2;                                                           //右
-      gmEffect();
+      landJudge(gMoveX, gMoveY);
     } else if( gKey[40]) {
       gAngle = 0; 
       gMoveY = 2;                                                          //下
-      gmEffect();
-    };
-  gPlayerX += gMoveX * SCROLL;
-  gPlayerY += gMoveY * SCROLL;
-  setInterval(gPlayerX = Math.round(gPlayerX), 2000);
-  setInterval(gPlayerY = Math.round(gPlayerY), 2000);
-  
+      landJudge(gMoveX, gMoveY);
+    }
+  };
 
-  function gmEffect() {
-    //移動後のタイル座標判定
-    let fmx = Math.floor(( gPlayerX + gMoveX)/ TILESIZE );                    //移動後のタイル座標X
-    let fmy = Math.floor(( (gPlayerY + gMoveY) + TILESIZE / 3 ) / TILESIZE);  //移動後のタイル座標Y
-    fmx += MAP_WIDTH;                                                         //マップループ処理
-    fmx %= MAP_WIDTH;                                                         //マップループ処理
-    fmy += MAP_HEIGHT;                                                        //マップループ処理
-    fmy %= MAP_HEIGHT;                                                        //マップループ処理
-    let fm = gMap[ fmy * MAP_WIDTH + fmx];                                    //タイル番号
-    //console.log(fm);
-    if(fm <= 2 || fm == 4 || fm == 5 || fm == 11){
-      if(IsTrueBoss == 4){
-        IsTrueBoss = 1;
-      }
-      gTalk = 0;
-    }
-    if(( 16 <= gPlayerX && gPlayerX <= 32) && ( 160 <= gPlayerY && gPlayerY <= 190)){
-      if(IsTrueBoss == 1){
-        IsTrueBoss ++;
-        AppearEnemy();
-      } else if(IsTrueBoss == 4){
-      } else {
-        setMessage('行き止まりだ', '波さえも静まりかえっている');
-      }
-    }
-    if(( 130 <= gPlayerX && gPlayerX <= 142 ) && ( 206 <= gPlayerY && gPlayerY <= 218)){
-      if(gTalk == 0){
-        setMessage ('祈っていましょう', 'きっと死者たちが守ってくださる');
-        gTalk = 1;
-      }
-    }
-    if(( 165 <= gPlayerX && gPlayerX <= 180 ) && ( 78 <= gPlayerY && gPlayerY <= 90)){
-      if(gTalk == 0 || gTalk == 2){
-        setMessage  ('魔王を倒して！', null);
-        gTalk = 1;
-      }
-    }
-    if(( 242 <= gPlayerX && gPlayerX <= 268 ) && ( 191 <= gPlayerY && gPlayerY <= 201)){
-      if(gTalk == 0 || gTalk == 2){
-        setMessage ('助けてください！', '北の城から来る魔物で街はめちゃくちゃです');
-        gTalk = 1;
-      }
-    }
-    if(( 322 <= gPlayerX && gPlayerX <= 344 ) && ( 178 <= gPlayerY && gPlayerY <= 186)){
-      if(gTalk == 0){
-        setMessage ('兵士の亡骸が血で滲んだメモを握っている', '”北•の•に••城•のカ•がある”');
-        gTalk = 1;
-      }
-    }
-    if (fm == 1){
-      if(gItem == 1 && gGuard == 3){
-        AppearEnemy();
-     }
-    }
-    if ((fm == 8) || (fm == 7) || (fm == 14)|| (fm == 15) ){                   //侵入不可地形の場合
-      gMoveX = 0;                                                              //移動禁止
-      gMoveY = 0;
-      console.log('移動禁止');
-    }
-    if((fm == 4) || (fm == 11)) {
-      //parseInt(gMoveX /= 2, 10);                                              //スローダウン
-      //parseInt(gMoveY /= 2, 10);
-      gMoveX /= 2;
-      gMoveY /= 2;
-      console.log('slow down');
-    }
-    if(fm == 5 && gHP < gMHP){
-      if(Math.random() * 20 < 1){                                             //ランダムで体力回復
-      gHP += Math.floor(gMHP / 20);
-      console.log('ランダムで体力回復');
-      }
-    }
-    if(fm == 16){
-      gPlayerX += TILESIZE;
-      gPlayerY += TILESIZE;
-      setMessage('強い流れに押し流される', null);
-      console.log('渦潮');
-    } 
-    if(fm == 9) {
-      if(gHP == 1){
-        gHP = 0;
-      } else if( 2 <= gHP && gHP <= 4 ){
-        gHP = 1;
-      } else {
-        gHP = Math.floor( gHP/4 ) + gHP % 4;
-      }
-      setMessage('猛毒に身体が蝕まれる', null);
-      console.log('毒')                                    // HPが1の場合は0を代入、HPが2<=4ならば1を代入、HPが5以上ならば4で割った商+余りを代入
-    }
-    if(fm == 10){
-      if(gHP == 1){
-        gHP = 0;
-      } else {
-        gHP = 1;
-      }
-      setMessage('マグマが身体を焼く', null);
-      console.log('マグマ')                                 // HPに0を代入
-    } 
-    if (fm == 12){
-      if(gTalk == 0){
-        setMessage('” 俊足の靴 ”を手に入れた！', '移動速度が上がった');
-        SCROLL *= 2;
-        if (SCROLL >= 3){
-          setMessage('元の靴に履き替えた', '通常の移動速度に戻った');
-          SCROLL = 1;
-        }
-        gTalk == 1;
-      }
-    }
-    if(fm == 13){
-        gHP = gMHP;
-        if(gTalk == 0){
-          setMessage ('懐かしい声を聞いた気がした', '”いってらっしゃい”とその声は言った');
-          gTalk = 1;
-        } 
-    }
-    if((150 <= gPlayerX && gPlayerX <= 152) && (255 <= gPlayerY && gPlayerY <= 262)){
-      gPlayerX = 8 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X       //ワープ処理
-      gPlayerY = 25 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
-      gMoveX = 0;
-      gMoveY = 0;
-      if(gEnforce == 0){
-        gMHP += 100;
-        gEnforce = 1;
-      }
-      console.log('ワープ')
-    }
-    if(fm == 17){
-      if(gTalk == 0){
-        setMessage  ('墓標の下にこそ祝福あり', null);
-        gTalk = 1;
-      }
-    }
-    if(( (fm == 19) || (fm == 20) || (fm == 27) || (fm == 28) )){
-      if(IsMid_Boss == 0){
-        IsMid_Boss = 1;
-        AppearEnemy();
-      } else if(gTalk == 0){
-        setMessage('城内に冷たい風が吹く', 'すすり泣きの声に似ている');
-        gTalk = 1;
-      }
-    }
-    if(fm == 31){
-      if(gGuard == 0){
-        gGuard = 1;
-        AppearEnemy();
-      }
-    }
-    if((240 <= gPlayerX && gPlayerX <= 254) && (363 <= gPlayerY && gPlayerY <= 376)){
-      if(gTalk == 0){
-        if (IsBoss == 3 && gSword < 2){
-          setMessage('" 勇者のつるぎ "を見つけた！', '攻撃力が上がった');
-          gSword = 2;
-        } else if (gSword == 0 && gLv < 10){
-          setMessage('" 奇跡のつるぎ "を見つけた！', '会心の一撃を放てるようになった');
-          gSword = 1;
-        } else if( gSword > 0 ){
-          setMessage('元の装備に戻した', null);
-          gSword = 0;
-        }
-        gTalk = 1;
-      }
-    }
-    if(( 368 <= gPlayerX && gPlayerX <= 385 ) && ( 228 <= gPlayerY && gPlayerY <= 246)){
-      if(gItem == 0){                                                           //カギ未所持の場合
-        gPlayerY -= TILESIZE;                                                   //一マス上へ移動
-        setMessage ('扉が閉ざされている', 'カギが必要なようだ');
-      } else if(gItem == 1 && gGuard < 4){
-        if(gTalk == 0){
-          setMessage ('" 魔王城へのカギ "を差し込んだ','扉が開いた' );
-          gTalk = 1;
-        }
-        gGuard = 3;
-      }
+  function gMove(gMoveX, gMoveY){
+    gPlayerX += gMoveX * SCROLL;
+    gPlayerY += gMoveY * SCROLL;
+    setInterval(gPlayerX = Math.round(gPlayerX), 2000);
+    setInterval(gPlayerY = Math.round(gPlayerY), 2000);
+      
+    /*if (gMoveX != 0 || gMoveY != 0){}       //移動中は座標を動かさない
+    else if( gKey[37]) gMoveX = - TILESIZE; 
+    else if( gKey[38]) gMoveY = - TILESIZE; 
+    else if( gKey[39]) gMoveX =   TILESIZE;
+    else if( gKey[40]) gMoveY =   TILESIZE;
 
-    }
-    if((400 <= gPlayerX && gPlayerX <= 414) && (28 <= gPlayerY && gPlayerY <= 42) && (gItem == 0 && gGuard == 2)){
-      gItem = 1;                                                                //カギ入手処理
-      setMessage ('” 魔王城へのカギ ” を手に入れた', null);
-    }
-    if(24 <= fm && fm <= 26){
-      gHP = gMHP;                                                               //街で休憩
-      console.log('休憩');
-    }
-    if(fm == 26){
-      if(gTalk == 0 || gTalk == 1){
-        setMessage ('ダメだ もうおしまいなんだぁ〜', null);
-        gTalk = 2;
-      }
-    }
-    if((fm == 21) || (fm == 22) || (fm == 30)){
-      if(gTalk == 0){
-        setMessage ('城内を奇妙な静けさが支配している', 'ただ魔物たちが王を偲ぶ声だけが聞こえる');
-        gTalk = 1;
-      } 
-    }
-    if( Math.random() * 100 < gEncounter[ fm ]){
-      LoadImage();
-      AppearEnemy();
-    }
-    if( fm == 29 && IsBoss == 0){
-      IsBoss = 1;
-      AppearEnemy();                                        //ボスエンカウント
-    }
-    };
+    gPlayerX += Math.sign(gMoveX);          //プレイヤー移動座標X
+    gPlayerY += Math.sign(gMoveY);          //プレイヤー移動座標y
+    gMoveX -= Math.sign(gMoveX);            //移動量消費x
+    gMoveY -= Math.sign(gMoveY);            //移動量消費Y   マス移動に切り替え*/
 
-  
-
-  /*if (gMoveX != 0 || gMoveY != 0){}       //移動中は座標を動かさない
-   else if( gKey[37]) gMoveX = - TILESIZE; 
-   else if( gKey[38]) gMoveY = - TILESIZE; 
-   else if( gKey[39]) gMoveX =   TILESIZE;
-   else if( gKey[40]) gMoveY =   TILESIZE;
-
-   gPlayerX += Math.sign(gMoveX);          //プレイヤー移動座標X
-   gPlayerY += Math.sign(gMoveY);          //プレイヤー移動座標y
-   gMoveX -= Math.sign(gMoveX);            //移動量消費x
-   gMoveY -= Math.sign(gMoveY);            //移動量消費Y   マス移動に切り替え*/
-
-   //マップループ処理
-  gPlayerX += (MAP_WIDTH * TILESIZE);
-  gPlayerX %= (MAP_WIDTH * TILESIZE);
-  gPlayerY += (MAP_HEIGHT * TILESIZE);
-  gPlayerY %= (MAP_HEIGHT * TILESIZE);
-};
+    //マップループ処理
+    gPlayerX += (MAP_WIDTH * TILESIZE);
+    gPlayerX %= (MAP_WIDTH * TILESIZE);
+    gPlayerY += (MAP_HEIGHT * TILESIZE);
+    gPlayerY %= (MAP_HEIGHT * TILESIZE);
+  };
 
 function Wmprint(){
   DrawMain();
@@ -888,8 +610,7 @@ window.onkeydown = function(ev){
       setMessage(M1, M2);
     }
     if(IsTrueBoss == 3){
-      IsTrueBoss ++;
-      IsTrueBoss = 0;
+      IsTrueBoss = 5;
     }if(IsBoss == 2){
       IsBoss ++;
       IsTrueBoss = 1;
