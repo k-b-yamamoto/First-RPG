@@ -10,8 +10,6 @@ const SCR_HEIGHT = 5;                     //画面のタイルサイズ高さの
 const SCR_WIDTH = 10;                     //画面のタイルサイズ幅の半分
 let SCROLL = 1;                           //スクロール速度
 const SMOOTH = 0;                         //ドットの補完処理の値
-const START_X = 8;                        //スタート位置x
-const START_Y = 6;                        //スタート位置y
 const TILECOLUMN = 8;                     //ドットの桁数
 const TILEROW = 8;                        //ドットの行数
 const TILESIZE = 16;                      //マスのサイズ
@@ -43,8 +41,6 @@ let gSirge = 0;                                             //戦闘時包囲要
 let gTalk = 0;                                              //メッセージ表示条件要素
 let T = null;                                               //モンスター引数
 let BN;                                                     //ボスクラス引数
-let gPlayerX = START_X * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
-let gPlayerY = START_Y * TILESIZE + TILESIZE / 2;           //プレイヤー座標Y
 
 const canvas = document.getElementById("main");                                             //メインキャンバスの要素
 const g = canvas.getContext( "2d" );                                                        //2D描画コンテキストを取得
@@ -174,9 +170,19 @@ function AddExp( val ) {
   }
 }
 
-function AppearEnemy(){
+function AppearEnemy(fm){
   gPhase = 1;                                          //敵出現フェイズ
   //console.log(gFileMonster[T].name);
+  console.log('gHp = ' + StatusLog[0]);
+  console.log('gMHp = ' + StatusLog[1]);
+  console.log('gex = ' + StatusLog[2]);
+  console.log('glv = ' + StatusLog[3]);
+  console.log('genforce = ' + StatusLog[4]);
+  console.log('gitem = ' + StatusLog[5]);
+  console.log('gspeed = ' + StatusLog[6]);
+  console.log('gsword = ' + StatusLog[7]);
+  console.log('gplayerx = ' + StatusLog[8]);
+  console.log('gplayerY = ' + StatusLog[9]);
   BossEvent();
   if(IsBossClass){
     setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard); //BN取得
@@ -299,7 +305,7 @@ function DrawMessage(g){
     return;
   }
   g.fillStyle = WNDSTYLE;                              //ウィンドウの色
-  g.fillRect (25, 110, 270, 35);                       //短形描画
+  g.fillRect (25, 110, 275, 35);                       //短形描画
   
   g.font = FONT;
   g.fillStyle = FONTSTYLE;                             //文字色
@@ -366,12 +372,13 @@ function GameOver(){
       if(gGuard == 3){
         gGuard -= 1;
       }
+      LoadData();
+      gAngle = 0;
       gPhase = 13;
-      gHP = Math.round(gMHP / 3);
       BN = null;
     }
     if(gCursor == 1) {                               //初期化処理
-      StartStatus();
+      setStartStatus();
       gAngle = 0;
       gCursor = 0;                                    
       IsBoss = 0;
@@ -596,6 +603,9 @@ window.onkeydown = function(ev){
     if (IsTrueBoss == 2){
       IsTrueBoss ++;
     }
+    //if(fm != 9 && fm != 10){
+      Save();
+    //}
     gPhase = 9;
     return;
   }
@@ -668,7 +678,7 @@ window.onkeydown = function(ev){
       console.log('エンターボタン押下');
       gOP = 0;
       gPhase = 0;
-      StartStatus();
+      setStartStatus();
       return;
     }
   }
