@@ -173,16 +173,6 @@ function AddExp( val ) {
 function AppearEnemy(fm){
   gPhase = 1;                                          //敵出現フェイズ
   //console.log(gFileMonster[T].name);
-  console.log('gHp = ' + StatusLog[0]);
-  console.log('gMHp = ' + StatusLog[1]);
-  console.log('gex = ' + StatusLog[2]);
-  console.log('glv = ' + StatusLog[3]);
-  console.log('genforce = ' + StatusLog[4]);
-  console.log('gitem = ' + StatusLog[5]);
-  console.log('gspeed = ' + StatusLog[6]);
-  console.log('gsword = ' + StatusLog[7]);
-  console.log('gplayerx = ' + StatusLog[8]);
-  console.log('gplayerY = ' + StatusLog[9]);
   BossEvent();
   if(IsBossClass){
     setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard); //BN取得
@@ -603,9 +593,7 @@ window.onkeydown = function(ev){
     if (IsTrueBoss == 2){
       IsTrueBoss ++;
     }
-    //if(fm != 9 && fm != 10){
       Save();
-    //}
     gPhase = 9;
     return;
   }

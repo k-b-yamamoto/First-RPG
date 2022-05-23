@@ -36,7 +36,9 @@ function LoadData(){
 //セーブ処理
 function Save(){
 StatusLog = [gHP, gMHP, gEx, gLv, gEnforce, gItem, gSpeed, gSword, gPlayerX, gPlayerY];
+/*
 for(let i = 0; i < StatusLog.length;i ++){
   console.log('ステータスログの中身 = ' + StatusLog[i]);
 }
+*/
 }
