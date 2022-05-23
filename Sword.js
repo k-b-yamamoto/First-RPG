@@ -18,7 +18,7 @@ function Sword(gSword){
     if(kaishin == 0){
       miracle = Math.floor(Math.random() * 20);
       //console.log('奇跡数' + miracle);
-      if(miracle == 7 || miracle == 77){
+      if(miracle == 7){
         swordAttack = 100;
         return swordAttack;
       } else {
@@ -31,7 +31,7 @@ function Sword(gSword){
   }
   
   if(gSword == 2){                                 //勇者の剣攻撃処理
-    swordAttack = 30;
+    swordAttack = Math.floor(25 + Math.random() * 11);
     return swordAttack;
   }
 }

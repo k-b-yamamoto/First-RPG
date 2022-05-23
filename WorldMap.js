@@ -213,7 +213,7 @@ function landJudge(gMoveX, gMoveY) {
   }
   if( Math.random() * 100 < gEncounter[ fm ]){            //敵エンカウント判定
     LoadImage();
-    AppearEnemy();
+    AppearEnemy(fm);
   }
   if((fm == 21) || (fm == 22) || (fm == 29) ||(fm == 30) ){
     bossCastle();
