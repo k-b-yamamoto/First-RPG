@@ -24,6 +24,7 @@ let gItem;                                                  //所持アイテム
 let gSpeed;                                                 //素早さ
 let gSword;                                                 //隠し武器要素
 let gImgPlayer;                                             //プレイヤー画像
+let gAngle = 0;                                             //プレイヤーの向き
 
 function setStartStatus(){
   gHP = START_HP;                                         //プレイヤーのHP
@@ -39,6 +40,19 @@ function setStartStatus(){
 
   return;
 }
+
+//経験値加算関数
+function GetExp( val ) {
+  gEx += val;                                          //経験値加算
+  setMessage(`${val} pt の経験値を獲得`, null);
+  while( gLv * ( gLv + 1) * 2 <= gEx){                 //レベルアップ条件
+    gLv++;                                             //レベルアップ
+    gMHP += 4 + Math.floor( Math.random() * 3 );       //最大HP上昇(4~6)
+    gHP = Math.min(gHP + Math.floor(gMHP / 5), gMHP);  //レベルアップ時体力を一定回復
+    gMessage2 = 'レベルが上がった！';
+  }
+}
+
 
 function DrawHero(g){
   gImgPlayer = new Image(); gImgPlayer.src = gFilePlayer;           //プレイヤー画像読み込み
