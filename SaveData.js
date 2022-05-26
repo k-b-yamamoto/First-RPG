@@ -4,18 +4,6 @@ let StatusLog = [];                           //ステータスのデータロ�
 
 //データロード
 function LoadData(){
-  /*
-  console.log('gHp = ' + StatusLog[0]);
-  console.log('gMHp = ' + StatusLog[1]);
-  console.log('gex = ' + StatusLog[2]);
-  console.log('glv = ' + StatusLog[3]);
-  console.log('genforce = ' + StatusLog[4]);
-  console.log('gitem = ' + StatusLog[5]);
-  console.log('gspeed = ' + StatusLog[6]);
-  console.log('gsword = ' + StatusLog[7]);
-  console.log('gplayerx = ' + StatusLog[8]);
-  console.log('gplayerY = ' + StatusLog[9]);
-  */
   if(!StatusLog.length){                   //まだセーブデータが存在しない場合
     setStartStatus();                      //初期ステータスを代入
   } else {
@@ -36,7 +24,9 @@ function LoadData(){
 //セーブ処理
 function Save(){
 StatusLog = [gHP, gMHP, gEx, gLv, gEnforce, gItem, gSpeed, gSword, gPlayerX, gPlayerY];
+/*
 for(let i = 0; i < StatusLog.length;i ++){
   console.log('ステータスログの中身 = ' + StatusLog[i]);
 }
+*/
 }

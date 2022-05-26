@@ -1,6 +1,7 @@
+'use strict';
 //マップ
-let gImgMap;                                                //マップ画像
 const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
+let gImgMap = new Image(); gImgMap.src = gFileMap;                    //マップ画像読み込み
 const gMap = [
    0,  0, 11,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 16, 11,
   11, 11, 11, 11, 11, 11,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 11,  6,  7,  6, 11,  8,  8,  8,  8,
@@ -40,16 +41,17 @@ const gMap = [
 const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];                                      //敵エンカウント確率
 
 let vN;                                                                          //村メッセージ要素
+let gTalk = 0;                                                                   //メッセージ表示条件要素
+let insertMessage = false;                                                           //メッセージ割り込み要素
 
 //マップ描画処理
 function DrawField( g ){
   let mx = Math.floor( gPlayerX / TILESIZE);  //プレイヤーのタイル座標x
   let my = Math.floor( gPlayerY / TILESIZE);  //プレイヤーのタイル座標y
-  //console.log('T = ' + T);
     
   for( let dy = - SCR_HEIGHT; dy <= SCR_HEIGHT; dy++){
     let ty = my + dy;
-    let py = ( my + dy + MAP_HEIGHT ) % 32;
+    let py = ( my + dy + MAP_HEIGHT) % 32;
     for( let dx = - SCR_WIDTH; dx <= SCR_WIDTH; dx++){
     let tx = mx + dx;
     let px = ( mx + dx + MAP_WIDTH ) % 32;
@@ -76,6 +78,11 @@ function landJudge(gMoveX, gMoveY) {
   fmy %= MAP_HEIGHT;                                                        //マップループ処理
   let fm = gMap[ fmy * MAP_WIDTH + fmx];                                    //タイル番号
   //console.log(fm);
+  
+  //タイル判定に従って各マスのエフェクトを呼び出す
+  if (fm == 1){                                                             //割り込みメッセージの初期化
+    insertMessage = false;
+  }
   if(fm <= 2 || fm == 4 || fm == 5 || fm == 11){
     if(IsTrueBoss == 4){
       IsTrueBoss = 1;
@@ -139,6 +146,15 @@ function landJudge(gMoveX, gMoveY) {
       gTalk = 1;
     }
   }
+  if(( 500 <= gPlayerX && gPlayerX <= 511 ) && ( 493 <= gPlayerY && gPlayerY <= 500)){
+    if(gSword != 3){
+      getMagicSword();
+    } else {
+      insertMessage = false;
+    }
+    gTalk = 1;
+  }
+
   if (fm == 1){
     if(gItem == 1 && gGuard == 3){                                           //門番１出現判定
       AppearEnemy();
@@ -146,14 +162,9 @@ function landJudge(gMoveX, gMoveY) {
   }
   if ((fm == 8) || (fm == 7) || (fm == 14)|| (fm == 15) ){                   //海、山判定
     inviolable(gMoveX, gMoveY);                                                            //移動禁止
-    gMoveX = chMoveX;
-    gMoveY = chMoveY;
-    return;
   }
   if((fm == 4) || (fm == 11)) {
     slowDown(gMoveX, gMoveY);                                                              //スローダウン
-    gMoveX = chMoveX;
-    gMoveY = chMoveY;
   }
   if(fm == 5){
     sacredSand();                                                            //準聖地
@@ -177,7 +188,7 @@ function landJudge(gMoveX, gMoveY) {
     sacredPlace();                                                         //聖地判定
   }
   if((150 <= gPlayerX && gPlayerX <= 152) && (255 <= gPlayerY && gPlayerY <= 262)){
-    secretPassage();
+      secretPassage();
   }
   if(fm == 17){
     if(gTalk == 0){
@@ -200,6 +211,12 @@ function landJudge(gMoveX, gMoveY) {
   if((400 <= gPlayerX && gPlayerX <= 414) && (28 <= gPlayerY && gPlayerY <= 42) && (gItem == 0 && gGuard == 2)){
     chest();
   }
+  if((494 <= gPlayerX && gPlayerX <= 510) && (271 <= gPlayerY && gPlayerY <= 281)){
+    if(gTalk == 0){
+      setHintIII();
+      gTalk = 1;
+    }
+  }
   if(fm == 26){
     if(gTalk == 0 || gTalk == 1){
       if(IsBoss > 1){
@@ -212,12 +229,10 @@ function landJudge(gMoveX, gMoveY) {
     }
   }
   if( Math.random() * 100 < gEncounter[ fm ]){            //敵エンカウント判定
-    LoadImage();
     AppearEnemy(fm);
   }
   if((fm == 21) || (fm == 22) || (fm == 29) ||(fm == 30) ){
     bossCastle();
   }
-  gMove(gMoveX, gMoveY);
-  };
+};
 
