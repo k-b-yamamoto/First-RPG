@@ -95,13 +95,14 @@ function placeOfSword(){
 }
 function cave(){
   if(gTalk == 0){
-  setMessage(' 俊足の靴 を手に入れた！', '移動速度が上がった');
-  SCROLL *= 2;
-  if (SCROLL >= 3){
-    setMessage('元の靴に履き替えた', '通常の移動速度に戻った');
-    SCROLL = 1;
-  }
-  gTalk == 1;
+    if(gShoes == 0){
+      setMessage(' 俊足の靴 を手に入れた！', '速度と回避力が上がった');
+      gShoes = 1;
+    } else {
+      setMessage('元の靴に履き替えた', '速度と回避力が元に戻った');
+      gShoes = 0;
+    }
+    gTalk == 1;
   }
 }
 function setHintI(){

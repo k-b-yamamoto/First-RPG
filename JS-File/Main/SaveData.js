@@ -18,12 +18,13 @@ function LoadData(){
     gSword = StatusLog[7];
     gPlayerX = StatusLog[8];
     gPlayerY = StatusLog[9];
+    gAvoid = StatusLog[10];
   }
 }
 
 //セーブ処理
 function Save(){
-StatusLog = [gHP, gMHP, gEx, gLv, gEnforce, gItem, gSpeed, gSword, gPlayerX, gPlayerY];
+StatusLog = [gHP, gMHP, gEx, gLv, gEnforce, gItem, gSpeed, gSword, gPlayerX, gPlayerY, gAvoid];
 /*
 for(let i = 0; i < StatusLog.length;i ++){
   console.log('ステータスログの中身 = ' + StatusLog[i]);

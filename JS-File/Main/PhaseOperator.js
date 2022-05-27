@@ -39,7 +39,10 @@ function PhaseOperate(c){
       //console.log('現在' + gPhase + 'ターン');
       CommandFight();
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-        gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
+        ShoesEffect(gShoes);
+        //console.log("スピード加算 = " + gPlusSpeed);
+        gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
+        //console.log('gspeed = ' + (gSpeed + gPlusSpeed));
         //console.log('gOrder =' + gOrder );
         Action();                                            //戦闘行動処理
         } else {
@@ -51,7 +54,8 @@ function PhaseOperate(c){
       //console.log('現在' + gPhase + 'ターン');
       CommandFightII();
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-        gOrder = Math.floor(Math.random() * (2 + gSpeed));   //戦闘行動順
+        ShoesEffect(gShoes);
+        gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
         //console.log('gOrder =' + gOrder );
         Action();                                            //戦闘行動処理
         } else {

@@ -78,16 +78,26 @@ function Action(){
       //console.log('現在のターンは ' + gPhase);
       Sword(gSword);
       d += swordAttack;
+      //console.log('ダメージ = ' + d);
       if(stuckNumber == 4){
         stuck = true;
       }    
       //console.log('装備攻撃力' + swordAttack + 'が加算されました');  
       if( d <= 0){
-        setMessage('ミス！', '攻撃を外した');
+        setMessage('ミス！', '攻撃が効かない');
       } else if(IsBossClass){
         setMessage('勇者の攻撃！', gFileBossClass[BossClassNumber].name + ' に ' + d + ' のダメージ！');
+        if(Math.floor(Math.random() * 101) > gFileBossClass[BossClassNumber].mHp){
+          gMessage2 = `しかし${gFileBossClass[BossClassNumber].name}は攻撃をかわした！`;
+          d = 0;
+          console.log('ダメージ = ' + d);
+        }
       } else {
         setMessage('勇者の攻撃！', gFileMonster[EnemyNumber].name + 'に ' + d + ' のダメージ！');
+        if(Math.floor(Math.random() * (10 - EnemyNumber)) > 5){
+          gMessage2 = `しかし${gFileMonster[EnemyNumber].name}は攻撃をかわした！`;
+          d = 0;
+        }
       }
       if (kaishin == 1){
         gMessage1 = '会心の一撃！';
@@ -108,7 +118,7 @@ function Action(){
           return;
         }
       } else {
-        gEnemyHP -=  Math.max(d, -1);
+        gEnemyHP -= Math.max(d, -1);
         //console.log('ターン4終了時の敵HP = ' + gEnemyHP);
         if(gEnemyHP <= 0){
           gPhase = 7;
@@ -154,16 +164,28 @@ function Action(){
         return;
       } else {
         let d = GetDamage( EnemyNumber + 2);
+        ShoesEffect(gShoes);
         if(IsBossClass){
           BossPower(BossClassNumber);
           //console.log('dSP = ' + dSP);
+          let avoidJudge = Math.floor(Math.random() * (Math.floor(gFileBossClass[BossClassNumber].mHp / 5)));
+          //console.log("gavoid = " + gAvoid);
+          //console.log("avoidjudge = " + avoidJudge);
           setMessage( gFileBossClass[BossClassNumber].name + ' の攻撃！', dSP + ' のダメージ！');
+          if(Math.floor(gAvoid) > avoidJudge){
+            dSP = 0;
+            gMessage2 = 'しかし勇者はヒラリとかわした！';
+          }
           gHP -= dSP;
         } else {
-        setMessage( gFileMonster[EnemyNumber].name + 'の攻撃！', d + ' のダメージ！');
+          let avoidJudge = Math.floor(Math.random() * (EnemyNumber + 5));  
+          setMessage( gFileMonster[EnemyNumber].name + 'の攻撃！', d + ' のダメージ！');
+          if(Math.floor(gAvoid) > avoidJudge){
+            d = 0;
+            gMessage2 = 'しかし勇者はヒラリとかわした！';
+          }
           gHP -= d;
         }
-
         if (gHP <= 0){                                               //プレイヤーが死亡した場合
           gHP = 0;
           gPhase = 10;                                                //死亡フェイズ
@@ -179,13 +201,14 @@ function Action(){
     }
   };
   if(gCursor == 1){
+    ShoesEffect();
     if(IsBossClass){
       setMessage('逃げることができない！', null);
       gPhase = 5;
       gCursor = 0;
       gSirge = 1;
       return;
-    } else if(Math.random() < 0.7){                         //「逃げる」成功
+    } else if(Math.floor(Math.random() * (10 * gSpeed)) > 2){                         //「逃げる」成功
         setMessage('なんとか逃げ切れた', null);
         //console.log('逃走経験値 = ' + (gEnemyMHP - gEnemyHP));
         gPhase = 8;

@@ -10,11 +10,11 @@ let BossClassNumber;                                                     //ボ�
 let gImgBossClass;                                        //ボス級画像
 
 const gFileBossClass = [
-  {name : '魔王デマオン', url : 'image/monster-image/m49.png', mHp : 100},            //ボス画像
-  {name : '魔塔の番犬', url :'image/monster-image/m50.png', mHp : 35},              //門番１
-  {name : '魔王城の門番', url :'image/monster-image/m64.png', mHp : 50},            //門番２
-  {name : '薄氷の王女', url :'image/monster-image/m79.png', mHp : 40},              //中ボス
-  {name : '%E5%8B%87%E8%80%85', url :'image/monster-image/m72.png', mHp : 300}     //裏ボス
+  {name : '魔王デマオン', url : 'Image/monster-image/m49.png', mHp : 100},            //ボス画像
+  {name : '魔塔の番犬', url :'Image/monster-image/m50.png', mHp : 35},              //門番１
+  {name : '魔王城の門番', url :'Image/monster-image/m64.png', mHp : 50},            //門番２
+  {name : '薄氷の王女', url :'Image/monster-image/m79.png', mHp : 40},              //中ボス
+  {name : '%E5%8B%87%E8%80%85', url :'Image/monster-image/m72.png', mHp : 300}     //裏ボス
 ];
 
 const AppearMessageI = [                                                          //ボス出現時のセリフ

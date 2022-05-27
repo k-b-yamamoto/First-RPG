@@ -1,6 +1,6 @@
 'use strict';
 //マップ
-const gFileMap = "image/[mate]WorldMap8bit.png";                                             //マップ画像
+const gFileMap = "Image/[mate]WorldMap8bit.png";                                             //マップ画像
 let gImgMap = new Image(); gImgMap.src = gFileMap;                    //マップ画像読み込み
 const gMap = [
    0,  0, 11,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 16, 11,
@@ -43,6 +43,8 @@ const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 
 let vN;                                                                          //村メッセージ要素
 let gTalk = 0;                                                                   //メッセージ表示条件要素
 let insertMessage = false;                                                           //メッセージ割り込み要素
+
+
 
 //マップ描画処理
 function DrawField( g ){

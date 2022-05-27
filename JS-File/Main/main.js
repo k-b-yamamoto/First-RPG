@@ -79,11 +79,10 @@ function gMove(gMoveX, gMoveY, chMoveX, chMoveY){
       gMoveX = chMoveX;
       gMoveY = chMoveY;
     }
+    ShoesEffect(gShoes);
+    //console.log("SCROLL = " + SCROLL);
     gPlayerX += gMoveX * SCROLL;
     gPlayerY += gMoveY * SCROLL;
-    setInterval(gPlayerX = Math.round(gPlayerX), 2000);
-    setInterval(gPlayerY = Math.round(gPlayerY), 2000);
-
     //マップループ処理
     gPlayerX += (MAP_WIDTH * TILESIZE);
     gPlayerX %= (MAP_WIDTH * TILESIZE);

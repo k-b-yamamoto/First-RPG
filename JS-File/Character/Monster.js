@@ -5,16 +5,16 @@ let EnemyNumber = null;                                               //モン�
 
 
 const gFileMonster = [
-  { name: '地獄蟲', url : "image/monster-image/m90.png"},
-  { name:'キャットボーイ', url: "image/monster-image/m69b.png"},
-  { name: 'スフィンクス', url : "image/monster-image/m63.png"},
-  { name: 'カルゴラ', url : "image/monster-image/m89.png"},
-  { name:'サタン', url : "image/monster-image/m61.png"},
-  { name: 'ナイトドラゴン', url : "image/monster-image/m87.png"}, 
-  { name: '金剛の騎士', url : "image/monster-image/m19.png"},
-  { name: '暗黒の騎士', url : "image/monster-image/m36.png"},
-  { name: 'オーディン', url : "image/monster-image/m62.png"},
-  { name:'ヒュドラ', url : "image/monster-image/m65.png" }
+  { name: '地獄蟲', url : "Image/monster-image/m90.png"},
+  { name:'キャットボーイ', url: "Image/monster-image/m69b.png"},
+  { name: 'スフィンクス', url : "Image/monster-image/m63.png"},
+  { name: 'カルゴラ', url : "Image/monster-image/m89.png"},
+  { name:'サタン', url : "Image/monster-image/m61.png"},
+  { name: 'ナイトドラゴン', url : "Image/monster-image/m87.png"}, 
+  { name: '金剛の騎士', url : "Image/monster-image/m19.png"},
+  { name: '暗黒の騎士', url : "Image/monster-image/m36.png"},
+  { name: 'オーディン', url : "Image/monster-image/m62.png"},
+  { name:'ヒュドラ', url : "Image/monster-image/m65.png" }
 ];                                                                      //モンスター画像
 
 let gEnemyHP ;                                              //敵のHP設定
