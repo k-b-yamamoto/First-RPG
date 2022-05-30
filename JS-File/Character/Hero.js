@@ -27,7 +27,6 @@ let gSword;                                                 //隠し武器要素
 let gImgPlayer;                                             //プレイヤー画像
 let gAngle = 0;                                             //プレイヤーの向き
 
-
 //ステータスに初期値を代入する関数
 function setStartStatus(){
   gHP = START_HP;
@@ -44,6 +43,25 @@ function setStartStatus(){
   return;
 }
 
+
+//プレイヤー移動処理関数
+function gMove(gMoveX, gMoveY, chMoveX, chMoveY){
+    if(chMoveX != null || chMoveY != null){
+      gMoveX = chMoveX;
+      gMoveY = chMoveY;
+    }
+    ShoesEffect(gShoes);
+    //console.log("SCROLL = " + SCROLL);
+    gPlayerX += gMoveX * SCROLL;
+    gPlayerY += gMoveY * SCROLL;
+    //マップループ処理
+    gPlayerX += (MAP_WIDTH * TILESIZE);
+    gPlayerX %= (MAP_WIDTH * TILESIZE);
+    gPlayerY += (MAP_HEIGHT * TILESIZE);
+    gPlayerY %= (MAP_HEIGHT * TILESIZE);
+};
+
+
 //経験値加算関数
 function GetExp( val ) {
   gEx += val;                                              //経験値加算
@@ -57,7 +75,6 @@ function GetExp( val ) {
     gMessage2 = 'レベルが上がった！';
   }
 }
-
 
 function DrawHero(g){
   gImgPlayer = new Image(); gImgPlayer.src = gFilePlayer;             //プレイヤー画像読み込み

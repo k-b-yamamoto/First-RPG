@@ -5,7 +5,7 @@ let StatusLog = [];                           //ステータスのデータロ�
 //データロード
 function LoadData(){
   if(!StatusLog.length){                   //まだセーブデータが存在しない場合
-    setStartStatus();                      //初期ステータスを代入
+    setStartStatus();                      //初期ステータスを呼び出し
   } else {
   //各ステータスにログの内容を代入
     gHP = Math.round(gMHP / 3);

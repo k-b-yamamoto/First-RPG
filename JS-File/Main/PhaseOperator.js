@@ -44,7 +44,7 @@ function PhaseOperate(c){
         gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
         //console.log('gspeed = ' + (gSpeed + gPlusSpeed));
         //console.log('gOrder =' + gOrder );
-        Action();                                            //戦闘行動処理
+        FightOperate();                                            //戦闘行動処理
         } else {
           gCursor = 1 - gCursor;                            //カーソル移動
       }
@@ -57,7 +57,7 @@ function PhaseOperate(c){
         ShoesEffect(gShoes);
         gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
         //console.log('gOrder =' + gOrder );
-        Action();                                            //戦闘行動処理
+        FightOperate();                                            //戦闘行動処理
         } else {
           gCursor = 1 - gCursor;                            //カーソル移動
         }
@@ -65,12 +65,12 @@ function PhaseOperate(c){
 
     case 4:
       //console.log('現在' + gPhase + 'ターン');
-      Action();
+      FightOperate();
     break;
 
     case 5:
       //console.log('現在' + gPhase + 'ターン');
-      Action();
+      FightOperate();
     break;
 
     case 6:
@@ -157,17 +157,15 @@ function PhaseOperate(c){
     break;
 
     case 11:
-      //console.log('現在' + gPhase + 'ターン');
+      // console.log('現在' + gPhase + 'ターン');
       EnemyNumber = null;
-      setMessage('    コンティニュー', '    はじめから');
-      gMessage3 = 'Game Over';  
+      setGOMessage();
       gPhase = 12;
     break;
 
     case 12:
-      setMessage('    コンティニュー', '    はじめから');
-      gMessage3 = 'Game Over';
-      //console.log('現在' + gPhase + 'ターン');
+      setGOMessage();
+      // console.log('現在' + gPhase + 'ターン');
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
         //console.log('エンターボタン押下');
         GameOver();
@@ -186,7 +184,7 @@ function PhaseOperate(c){
       //console.log('現在' + gPhase + 'ターン');
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
         //console.log('エンターボタン押下');
-        gOP = 0;
+        gOP = false;
         gPhase = 0;
         setStartStatus();
         return;

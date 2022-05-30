@@ -2,8 +2,9 @@
 
 let kaishin;
 let miracle;
-let swordAttack = 0;                               //装備攻撃力
+let swordAttack = 0;                                        //装備攻撃力
 let magicAttack;
+let recoilDamage;                                           //反動ダメージ要素
 let stuckNumber;
 let stuck = false;
 

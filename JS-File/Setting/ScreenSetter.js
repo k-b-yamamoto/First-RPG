@@ -1,7 +1,9 @@
 'use strict';
 
+const SMOOTH = 0;                         //ドットの補完処理の値
+
 //ブラウザ起動イベント
-function SetScreen(){
+function SetScreenSize(){
   WmSize();                                                 //画面サイズ初期化
   window.addEventListener("resize", function(){WmSize()});  //ブラウザサイズ変更時にWmSize関数を呼び出してサイズ調整
   TUG.init();

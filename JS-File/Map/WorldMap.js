@@ -1,6 +1,13 @@
 'use strict';
 //マップ
-const gFileMap = "Image/[mate]WorldMap8bit.png";                                             //マップ画像
+const MAP_WIDTH = 32;                     //マップ幅
+const MAP_HEIGHT = 32;                    //マップ高さ
+const TILESIZE = 16;                      //マスのサイズ
+const TILECOLUMN = 8;                     //ドットの桁数
+const TILEROW = 8;                        //ドットの行数
+const SCR_HEIGHT = 5;                     //画面のタイルサイズ高さの半分
+const SCR_WIDTH = 10;                     //画面のタイルサイズ幅の半分
+const gFileMap = "Image/[mate]WorldMap8bit.png";                      //マップ画像
 let gImgMap = new Image(); gImgMap.src = gFileMap;                    //マップ画像読み込み
 const gMap = [
    0,  0, 11,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 16, 11,
@@ -42,8 +49,7 @@ const gEncounter = [1, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 
 
 let vN;                                                                          //村メッセージ要素
 let gTalk = 0;                                                                   //メッセージ表示条件要素
-let insertMessage = false;                                                           //メッセージ割り込み要素
-
+let insertMessage = false;                                                       //メッセージ割り込み要素
 
 
 //マップ描画処理
@@ -67,8 +73,48 @@ function DrawField( g ){
     /*g.fillStyle = "#ff0000";
     g.fillRect( 0, HEIGHT / 2 - 1, WIDTH, 2);
     g.fillRect( WIDTH / 2 - 1, 0, 2, HEIGHT);*/         //中心線
-  
 }
+
+// マス描画
+function DrawTile( g, x , y, idx){
+  const ix = (idx % TILECOLUMN) * TILESIZE;
+  const iy = Math.floor(idx / TILEROW) * TILESIZE;
+  //drawImage(使用するイメージ, 使用範囲の開始x座標, 開始y座標, 使用範囲の幅, 使用範囲の高さ, イメージを描画するx座標, y座標, 描画の幅,描画高さ)
+  g.drawImage( gImgMap, ix, iy, TILESIZE, TILESIZE,  x, y, TILESIZE, TILESIZE);
+};
+
+//フィールド進行処理関数
+function TickField(){
+  if(gPhase != 0){                                                         //フィールド移動ターン以外の場合はリターン
+    return;
+  } else {
+    /*入力されたキーごとに「移動」とキャラの「向き」の値を設定
+      移動の値を引数に、移動後のマスの種類とエフェクトを取得
+    */
+    if( gKey[37]) {
+      gAngle = 1; 
+      gMoveX = -2;                                                         //左
+      landJudge(gMoveX, gMoveY);
+    } else if( gKey[38]) {
+      gAngle = 3; 
+      gMoveY = - 2;                                                        //上
+      landJudge(gMoveX, gMoveY);
+    } else if( gKey[39]) {
+      gAngle = 2;
+      gMoveX= 2;                                                           //右
+      landJudge(gMoveX, gMoveY);
+    } else if( gKey[40]) {
+      gAngle = 0; 
+      gMoveY = 2;                                                          //下
+      landJudge(gMoveX, gMoveY);
+    }
+    //エフェクトを加味した上で移動処理関数を呼び出す
+    gMove(gMoveX, gMoveY, chMoveX, chMoveY);
+    chMoveX = null;                                                        //移動エフェクトの初期化
+    chMoveY = null;
+  }
+};
+
 
 function landJudge(gMoveX, gMoveY) {
   //移動後のタイル座標判定
@@ -237,4 +283,3 @@ function landJudge(gMoveX, gMoveY) {
     bossCastle();
   }
 };
-

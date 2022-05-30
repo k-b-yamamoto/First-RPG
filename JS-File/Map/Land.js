@@ -18,6 +18,13 @@ function slowDown(gMoveX, gMoveY){
   return;
 }
 function sacredSand(){
+  if(gEnforce == 1 && gTalk == 0){
+    gMHP += 100;
+    gEnforce = 2;
+    gHP = gMHP;
+    setMessage ('懐かしい声を聞いた気がした', '”いってらっしゃい”とその声は言った');
+    gTalk = 1; 
+  }
   if(gHP < gMHP){
     if(Math.random() * 20 < 1){                                             //ランダムで体力回復
     gHP += Math.floor(gMHP / 20);
@@ -60,17 +67,12 @@ function magma(){
   //console.log('マグマ')                                 // HPに0を代入
 }
 function sacredPlace(){
-  if(gEnforce == 0){
-    gMHP += 100;
-    gEnforce = 1;
-  }
   gHP = gMHP;
-  if(gTalk == 0){
-    setMessage ('懐かしい声を聞いた気がした', '”いってらっしゃい”とその声は言った');
-    gTalk = 1;
-  } 
 }
 function secretPassage(){
+  if(gEnforce == 0){
+    gEnforce = 1;
+  }
   gPlayerX = 8 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X       //ワープ処理
   gPlayerY = 25 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
   gMoveX = 0;
