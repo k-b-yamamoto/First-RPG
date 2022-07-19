@@ -9,7 +9,7 @@ let IsBoss = 0;                                             //ボス要素
 let IsMid_Boss = 0;                                         //中ボス要素
 let IsTrueBoss = 0;                                         //裏ボス画像
 
-function PhaseOperate(c){
+function operatePhase(c){
   if( gKey[ c ] != 0){          //既に押下中の場合（キーリピート）
     return;
   }
@@ -22,64 +22,57 @@ function PhaseOperate(c){
   switch(gPhase){
 
     case 0:
-      if(gHP <= 0){
+      if(hero1.getHp <= 0){
         setMessage('勇者は死んでしまった', null);
-        gHP = 0;
+        hero1.setHp = 0;
         gPhase = 11;    
       }
     break;
 
     case 1:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       gCursor = 0;
       CommandFight();
     break;
 
     case 2:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       CommandFight();
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-        ShoesEffect(gShoes);
-        //console.log("スピード加算 = " + gPlusSpeed);
-        gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
-        //console.log('gspeed = ' + (gSpeed + gPlusSpeed));
-        //console.log('gOrder =' + gOrder );
-        FightOperate();                                            //戦闘行動処理
+        judgeOrder(gShoes);                                        //戦闘行動順を決定
+        // console.log('gorder = ' + gOrder + ' orderDice = ' + OrderDice);
+        gOrder = OrderDice;
+        operateFight(gOrder);                                            //戦闘行動処理
         } else {
           gCursor = 1 - gCursor;                            //カーソル移動
       }
     break;
 
     case 3:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       CommandFightII();
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-        ShoesEffect(gShoes);
-        gOrder = Math.floor(Math.random() * (2 + Math.round(gSpeed + gPlusSpeed)));   //戦闘行動順
-        //console.log('gOrder =' + gOrder );
-        FightOperate();                                            //戦闘行動処理
+        judgeOrder(gShoes);                                        //戦闘行動順を決定
+        gOrder = OrderDice;
+        operateFight(gOrder);                                            //戦闘行動処理
         } else {
           gCursor = 1 - gCursor;                            //カーソル移動
-        }
+      }
     break;
 
     case 4:
-      //console.log('現在' + gPhase + 'ターン');
-      FightOperate();
-    break;
-
     case 5:
-      //console.log('現在' + gPhase + 'ターン');
-      FightOperate();
+      console.log('現在' + gPhase + 'ターン');
+      operateFight(gOrder);
     break;
 
     case 6:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       CommandFightII();                                      //戦闘コマンド
     break;
 
     case 7:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
       //console.log('BossClassNumber = ' + BossClassNumber);
       if(BossClassNumber != null){
@@ -96,9 +89,9 @@ function PhaseOperate(c){
     break;
 
     case 8:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       //console.log('gBossHP = ' + gBossMHP);
-      if(gCursor == 1 && gHP > 0){
+      if(gCursor == 1 && hero1.getHp > 0){
         if((gEnemyMHP - gEnemyHP) == 0){
           EnemyNumber = null;
           gPhase = 0;
@@ -129,7 +122,7 @@ function PhaseOperate(c){
     break;
 
     case 9:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       EnemyNumber = null;
       setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
       //console.log('BossClassNumber = ' + BossClassNumber);
@@ -151,7 +144,7 @@ function PhaseOperate(c){
     break;
 
     case 10:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       setMessage('勇者は死んでしまった', null);
       gPhase = 11;
     break;
@@ -181,12 +174,12 @@ function PhaseOperate(c){
     break;
 
     case 13:
-      //console.log('現在' + gPhase + 'ターン');
+      console.log('現在' + gPhase + 'ターン');
       if( c == 13 || c == 90){                               //Enterキー、またはZキーの場合
-        //console.log('エンターボタン押下');
+        // console.log('エンターボタン押下');
         gOP = false;
         gPhase = 0;
-        setStartStatus();
+        // setStartStatus();
         return;
       }
     break;

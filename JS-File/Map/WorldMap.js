@@ -54,8 +54,8 @@ let insertMessage = false;                                                      
 
 //マップ描画処理
 function DrawField( g ){
-  let mx = Math.floor( gPlayerX / TILESIZE);  //プレイヤーのタイル座標x
-  let my = Math.floor( gPlayerY / TILESIZE);  //プレイヤーのタイル座標y
+  let mx = Math.floor( hero1.getPlayerX / TILESIZE);  //プレイヤーのタイル座標x
+  let my = Math.floor( hero1.getPlayerY / TILESIZE);  //プレイヤーのタイル座標y
     
   for( let dy = - SCR_HEIGHT; dy <= SCR_HEIGHT; dy++){
     let ty = my + dy;
@@ -64,8 +64,8 @@ function DrawField( g ){
     let tx = mx + dx;
     let px = ( mx + dx + MAP_WIDTH ) % 32;
        DrawTile( g, 
-                tx * TILESIZE + WIDTH / 2 - gPlayerX,
-                ty * TILESIZE + HEIGHT / 2 - gPlayerY,
+                tx * TILESIZE + WIDTH / 2 - hero1.getPlayerX,
+                ty * TILESIZE + HEIGHT / 2 - hero1.getPlayerY,
                 gMap[ py * MAP_WIDTH + px ]
                 );   
       }
@@ -118,8 +118,9 @@ function TickField(){
 
 function landJudge(gMoveX, gMoveY) {
   //移動後のタイル座標判定
-  let fmx = Math.floor(( gPlayerX + gMoveX)/ TILESIZE );                    //移動後のタイル座標X
-  let fmy = Math.floor(( (gPlayerY + gMoveY) + TILESIZE / 3 ) / TILESIZE);  //移動後のタイル座標Y
+  let fmx = Math.floor(( hero1.getPlayerX + gMoveX)/ TILESIZE );                    //移動後のタイル座標X
+  let fmy = Math.floor(( (hero1.getPlayerY + gMoveY) + TILESIZE / 3 ) / TILESIZE);  //移動後のタイル座標Y
+  // console.log(hero1.getPlayerX);
   fmx += MAP_WIDTH;                                                         //マップループ処理
   fmx %= MAP_WIDTH;                                                         //マップループ処理
   fmy += MAP_HEIGHT;                                                        //マップループ処理
@@ -137,10 +138,10 @@ function landJudge(gMoveX, gMoveY) {
     }
     gTalk = 0;
   }
-  if(( 16 <= gPlayerX && gPlayerX <= 32) && ( 160 <= gPlayerY && gPlayerY <= 190)){    //裏ボスマス
+  if(( 16 <= hero1.getPlayerX && hero1.getPlayerX <= 32) && ( 160 <= hero1.getPlayerY && hero1.getPlayerY <= 190)){    //裏ボスマス
      PlaceOfTB();
   }
-  if(( 130 <= gPlayerX && gPlayerX <= 142 ) && ( 206 <= gPlayerY && gPlayerY <= 218)){
+  if(( 130 <= hero1.getPlayerX && hero1.getPlayerX <= 142 ) && ( 206 <= hero1.getPlayerY && hero1.getPlayerY <= 218)){
       if(gTalk == 0){
         if(IsTrueBoss == 1){
           vN = 8;
@@ -153,7 +154,7 @@ function landJudge(gMoveX, gMoveY) {
         gTalk = 1;
       }
   }
-  if(( 165 <= gPlayerX && gPlayerX <= 180 ) && ( 78 <= gPlayerY && gPlayerY <= 90)){
+  if(( 165 <= hero1.getPlayerX && hero1.getPlayerX <= 180 ) && ( 78 <= hero1.getPlayerY && hero1.getPlayerY <= 90)){
     if(gTalk == 0 || gTalk == 2){
       if(IsBoss > 1){
         vN = 6;
@@ -164,7 +165,7 @@ function landJudge(gMoveX, gMoveY) {
       gTalk = 1;
     }
   }
-  if(( 224 <= gPlayerX && gPlayerX <= 238) && ( 446 <= gPlayerY && gPlayerY <= 458)){
+  if(( 224 <= hero1.getPlayerX && hero1.getPlayerX <= 238) && ( 446 <= hero1.getPlayerY && hero1.getPlayerY <= 458)){
     if(gTalk == 0){
       if(IsTrueBoss == 5){
         vN = 10;
@@ -177,7 +178,7 @@ function landJudge(gMoveX, gMoveY) {
       gTalk = 1;
     }
   }
-  if(( 242 <= gPlayerX && gPlayerX <= 268 ) && ( 191 <= gPlayerY && gPlayerY <= 201)){
+  if(( 242 <= hero1.getPlayerX && hero1.getPlayerX <= 268 ) && ( 191 <= hero1.getPlayerY && hero1.getPlayerY <= 201)){
     if(gTalk == 0 || gTalk == 2){
       if(IsMid_Boss == 0){
         vN = 3;
@@ -188,13 +189,13 @@ function landJudge(gMoveX, gMoveY) {
       gTalk = 1;
     }
   }
-  if(( 322 <= gPlayerX && gPlayerX <= 344 ) && ( 178 <= gPlayerY && gPlayerY <= 186)){
+  if(( 322 <= hero1.getPlayerX && hero1.getPlayerX <= 344 ) && ( 178 <= hero1.getPlayerY && hero1.getPlayerY <= 186)){
     if(gTalk == 0){
       setHintI();
       gTalk = 1;
     }
   }
-  if(( 500 <= gPlayerX && gPlayerX <= 511 ) && ( 493 <= gPlayerY && gPlayerY <= 500)){
+  if(( 500 <= hero1.getPlayerX && hero1.getPlayerX <= 511 ) && ( 493 <= hero1.getPlayerY && hero1.getPlayerY <= 500)){
     if(gSword != 3){
       getMagicSword();
     } else {
@@ -235,7 +236,7 @@ function landJudge(gMoveX, gMoveY) {
   if(fm == 13){
     sacredPlace();                                                         //聖地判定
   }
-  if((150 <= gPlayerX && gPlayerX <= 152) && (255 <= gPlayerY && gPlayerY <= 262)){
+  if((150 <= hero1.getPlayerX && hero1.getPlayerX <= 152) && (255 <= hero1.getPlayerY && hero1.getPlayerY <= 262)){
       secretPassage();
   }
   if(fm == 17){
@@ -250,16 +251,16 @@ function landJudge(gMoveX, gMoveY) {
   if(fm == 31){
     guardCastle();
   }
-  if((240 <= gPlayerX && gPlayerX <= 254) && (363 <= gPlayerY && gPlayerY <= 376)){
+  if((240 <= hero1.getPlayerX && hero1.getPlayerX <= 254) && (363 <= hero1.getPlayerY && hero1.getPlayerY <= 376)){
     placeOfSword();
   }
-  if(( 368 <= gPlayerX && gPlayerX <= 385 ) && ( 228 <= gPlayerY && gPlayerY <= 246)){
+  if(( 368 <= hero1.getPlayerX && hero1.getPlayerX <= 385 ) && ( 228 <= hero1.getPlayerY && hero1.getPlayerY <= 246)){
     gate();
   }
-  if((400 <= gPlayerX && gPlayerX <= 414) && (28 <= gPlayerY && gPlayerY <= 42) && (gItem == 0 && gGuard == 2)){
+  if((400 <= hero1.getPlayerX && hero1.getPlayerX <= 414) && (28 <= hero1.getPlayerY && hero1.getPlayerY <= 42) && (gItem == 0 && gGuard == 2)){
     chest();
   }
-  if((494 <= gPlayerX && gPlayerX <= 510) && (271 <= gPlayerY && gPlayerY <= 281)){
+  if((494 <= hero1.getPlayerX && hero1.getPlayerX <= 510) && (271 <= hero1.getPlayerY && hero1.getPlayerY <= 281)){
     if(gTalk == 0){
       setHintIII();
       gTalk = 1;

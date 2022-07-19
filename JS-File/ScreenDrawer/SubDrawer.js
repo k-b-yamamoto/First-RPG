@@ -20,9 +20,9 @@ function DrawStatus(g){
   if (gPhase < 12 && (!gOP)){                                          //ゲームオーバー画面以外
     g.font = FONT;
     g.fillStyle = FONTSTYLE;                                             //文字色
-    g.fillText('LV.', 19, 25); DrawTextR( g, gLv, 61, 25);               //レヴェル描画
-    g.fillText('HP', 19, 39); DrawTextR( g, gHP, 61, 39);                //HP描画
-    g.fillText('EX.', 19, 53); DrawTextR( g, gEx, 61, 53);               //経験値描画
+    g.fillText('LV.', 19, 25); DrawTextR( g, hero1.getLv, 61, 25);               //レヴェル描画
+    g.fillText('HP', 19, 39); DrawTextR( g, hero1.getHp, 61, 39);                //HP描画
+    g.fillText('EX.', 19, 53); DrawTextR( g, hero1.getGEx, 61, 53);               //経験値描画
   }
 }
 // テクスト整列関数
@@ -73,7 +73,7 @@ function DrawMarks( g ){
   //let mx = Math.floor( gPlayerX / TILESIZE);        
   //let my = Math.floor( gPlayerY / TILESIZE);
   //console.log("x= " + gPlayerX + "  y=" + gPlayerY);
-  g.fillText('gPlayerX = ' + gPlayerX + 'gPlayerY = ' + gPlayerY, 25, 14);
+  g.fillText('gPlayerX = ' + hero1.getPlayerX + 'gPlayerY = ' + hero1.getPlayerY, 25, 14);
   //g.fillText("x = "  + gPlayerX + "  " + " y= " + gPlayerY + "  "  + " m= " + gMap[ my * MAP_WIDTH + mx ], 25, 14);
 }
 

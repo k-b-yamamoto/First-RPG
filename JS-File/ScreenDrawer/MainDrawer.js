@@ -8,8 +8,9 @@ function DrawMain(){
   if(gOP){
     DrawOP( g );                //オープニング画面
   } else if(gPhase <= 1){
+    // console.log('現在' + gPhase + 'ターン');
     DrawExploration( g );          //探索画面
-    // DrawMarks( g );               //デバッグ用ウィンドウ
+    DrawMarks( g );               //デバッグ用ウィンドウ
   } else {
     DrawFight( g );             //戦闘画面
   }

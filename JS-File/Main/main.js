@@ -8,6 +8,7 @@ let gWidth;                               //実画面の幅
 let gHeight;                              //実画面の高さ
 const gKey = new Uint8Array( 0x100 );     //キー入力バッファ
 let gFrame = 0;                           //内部カウンタ
+const hero1 = new Hero();
 
 
 window.onload = SetScreenSize();          //ブラウザ起動時にスクリーンサイズ等セッティング
@@ -25,7 +26,7 @@ TUG.onTimer =  function( dif ){           //タイマーイベント発生ごと
 
 window.onkeydown = function (ev){                           //　キー（down）入力イベント
   let c = ev.keyCode;            //キーコード取得
-  PhaseOperate(c);               //ターン処理を行なってターンを進める
+  operatePhase(c);               //ターン処理を行なってターンを進める
 }
 
 window.onkeyup = function(ev){                              //　キー（up）入力停止イベント

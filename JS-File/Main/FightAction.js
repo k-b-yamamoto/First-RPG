@@ -9,8 +9,8 @@ function GetDamage(a){
 
 //勇者の攻撃処理
 function HeroAttack(){
-  d = GetDamage( gLv + 3) - EnemyNumber;                     //ダメージ計算取得結果
-  Sword(gSword);
+  d = GetDamage( hero1.getLv + 3) - EnemyNumber;                     //ダメージ計算取得結果
+  Sword(hero1.getGSword);
   d += swordAttack;
   //console.log('ダメージ = ' + d);
   //console.log('装備攻撃力' + swordAttack + 'が加算されました');
@@ -42,8 +42,8 @@ function HeroAttack(){
   }
   if (magicAttack == 1){
     gMessage1 = '命削りの一撃!!';
-    recoil(gHP);
-    gHP = recoilDamage;
+    recoil(hero1.getHp);
+    hero1.setHp = recoilDamage;
   }
   return d;
 }
@@ -58,20 +58,20 @@ function MonsterAttack(){
     //console.log("gavoid = " + gAvoid);
     //console.log("avoidjudge = " + avoidJudge);
     setMessage( gFileBossClass[BossClassNumber].name + ' の攻撃！', dSP + ' のダメージ！');
-    if(Math.floor(gAvoid) > avoidJudge){
+    if(Math.floor(hero1.getGAvoid) > avoidJudge){
       dSP = 0;
       gMessage2 = 'しかし勇者はヒラリとかわした！';
     }
-    gHP -= dSP;
+    hero1.setHp = hero1.getHp - dSP;
   } else {
     let avoidJudge = Math.floor(Math.random() * (EnemyNumber + 5));  
     setMessage( gFileMonster[EnemyNumber].name + 'の攻撃！', d + ' のダメージ！');
-    if(Math.floor(gAvoid) > avoidJudge){
+    if(Math.floor(hero1.getGAvoid) > avoidJudge){
       d = 0;
       gMessage2 = 'しかし勇者はヒラリとかわした！';
     }
-    gHP -= d;
-    return gHP;
+    hero1.setHp = hero1.getHp - d;
+    // return gHP;
   }
 }
 
@@ -120,30 +120,35 @@ function GameOver(){
     break;
 
     case 1:                                         //「はじめから」を選択
-      setStartStatus();
+      hero1.setHp = StartStatus[0];
+      hero1.setMhp = StartStatus[1];
+      hero1.setGEx = StartStatus[2];
+      hero1.setLv = StartStatus[3];
+      hero1.setEnforce = StartStatus[4];
+      hero1.setGItem = StartStatus[5];
+      hero1.setSpeed = StartStatus[6];
+      hero1.setGSword = StartStatus[7];
+      hero1.setPlayerX = StartStatus[8] * TILESIZE + TILESIZE / 2;
+      hero1.setPlayerY = StartStatus[9] * TILESIZE + TILESIZE / 2;
+      hero1.setGAvoid = StartStatus[10];
       gAngle = 0;
       gCursor = 0;                                    
       IsBoss = 0;
       IsMid_Boss = 0;
       IsTrueBoss = 0;
-      gItem = 0;
-      gGuard = 0;
-      gSword = 0;
       BossClassNumber = null;
-      gPlayerX = START_X * TILESIZE + TILESIZE / 2;  //プレイヤー座標X
-      gPlayerY = START_Y * TILESIZE + TILESIZE / 2;  //プレイヤー座標Y
     break;
   }
   return;
 }
 
-function Run(gSpeed){
+function Run(){
   if(IsBossClass){
     setMessage('逃げることができない！', null);
     gPhase = 5;
     gCursor = 0;
     gSirge = 1;
-  } else if(Math.floor(Math.random() * (10 * gSpeed)) > 2){                         //「逃げる」成功
+  } else if(Math.floor(Math.random() * (10 * hero1.getSpeed)) > 2){                         //「逃げる」成功
     setMessage('なんとか逃げ切れた', null);
     //console.log('逃走経験値 = ' + (gEnemyMHP - gEnemyHP));
     gPhase = 8;

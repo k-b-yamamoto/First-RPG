@@ -18,33 +18,33 @@ function slowDown(gMoveX, gMoveY){
   return;
 }
 function sacredSand(){
-  if(gEnforce == 1 && gTalk == 0){
-    gMHP += 100;
-    gEnforce = 2;
-    gHP = gMHP;
+  if(hero1.getEnforce == 1 && gTalk == 0){
+    hero1.setMhp = hero1.getMhp + 100;
+    hero1.setEnforce = 2;
+    hero1.setHp = hero1.getMhp;
     setMessage ('懐かしい声を聞いた気がした', '”いってらっしゃい”とその声は言った');
     gTalk = 1; 
   }
-  if(gHP < gMHP){
+  if(hero1.getHp < hero1.getMhp){
     if(Math.random() * 20 < 1){                                             //ランダムで体力回復
-    gHP += Math.floor(gMHP / 20);
+    hero1.setHp = hero1.getHp + Math.floor(hero1.getMhp / 20);
     //console.log('ランダムで体力回復');
     }    
   } else{}
 }
 function rapidStream(){
-  gPlayerX += TILESIZE;
-  gPlayerY += TILESIZE;
+  hero1.setPlayerX = hero1.getPlayerX + TILESIZE;
+  hero1.setPlayerY = hero1.getPlayerY + TILESIZE;
   setMessage('強い流れに押し流される', null);
   //console.log('渦潮');
 }
 function poison(){
-  if(gHP == 1){
-    gHP = 0;
-  } else if( 2 <= gHP && gHP <= 4 ){
-    gHP = 1;
+  if(hero1.getHp == 1){
+    hero1.setHp = 0;
+  } else if( 2 <= hero1.getHp && hero1.getHp <= 4 ){
+    hero1.setHp = 1;
   } else {
-    gHP = Math.floor( gHP/2 );
+    hero1.setHp = Math.floor( hero1.getHp / 2 );
   }
   if(!insertMessage){
     setMessage('猛毒に身体が蝕まれる', null);
@@ -52,29 +52,29 @@ function poison(){
   //console.log('毒')                                    // HPが1の場合は0を代入、HPが2<=4ならば1を代入、HPが5以上ならば4で割った商+余りを代入
 }
 function getMagicSword(){
-  gSword = 3;
+  hero1.setGSword = 3;
   insertMessage = true;
   setMessage(' ヒュドラの魔剣 を手に入れた！', 'HPを削って魔法攻撃を繰り出す');
   //console.log('ヒュドラの魔剣を手に入れた');
 }
 function magma(){
-  if(gHP == 1){
-    gHP = 0;
+  if(hero1.getHp == 1){
+    hero1.setHp = 0;
   } else {
-    gHP = 1;
+    hero1.setHp = 1;
   }
   setMessage('マグマが身体を焼く', null);
   //console.log('マグマ')                                 // HPに0を代入
 }
 function sacredPlace(){
-  gHP = gMHP;
+  hero1.setHp = hero1.getMhp;
 }
 function secretPassage(){
-  if(gEnforce == 0){
-    gEnforce = 1;
+  if(hero1.getEnforce == 0){
+    hero1.setEnforce = 1;
   }
-  gPlayerX = 8 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X       //ワープ処理
-  gPlayerY = 25 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
+  hero1.setPlayerX = 8 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X       //ワープ処理
+  hero1.setPlayerY = 25 * TILESIZE + TILESIZE / 2;           //プレイヤー座標X
   gMoveX = 0;
   gMoveY = 0;
   //console.log('ワープ')
@@ -82,15 +82,15 @@ function secretPassage(){
 }
 function placeOfSword(){
   if(gTalk == 0){
-  if (IsBoss == 3 && gSword != 2){
+  if (IsBoss == 3 && hero1.getGSword != 2){
     setMessage(' 勇者のつるぎ を見つけた！', '攻撃力が上がった');
-    gSword = 2;
-  } else if ((gSword == 0 || gSword == 3) && gLv < 10){
+    hero1.setGSword = 2;
+  } else if ((hero1.getGSword == 0 || hero1.getGSword == 3) && gLv < 10){
     setMessage(' 奇跡のつるぎ を見つけた！', '会心の一撃を放てるようになった');
-    gSword = 1;
-  } else if( gSword > 0 ){
+    hero1.setGSword  = 1;
+  } else if( hero1.getGSword > 0 ){
     setMessage('元の装備に戻した', null);
-    gSword = 0;
+    hero1.setGSword = 0;
   }
   gTalk = 1;
   }    

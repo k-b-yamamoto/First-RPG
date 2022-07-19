@@ -42,8 +42,8 @@ function setEnemyHp(EnemyNumber){
 
 function setMonsterNumber(){                            //敵のランダム選択と描画
   if(EnemyNumber === null){
-    EnemyNumber = Math.abs( gPlayerX / TILESIZE - START_X) +
-        Math.abs( gPlayerY / TILESIZE - START_Y);
+    EnemyNumber = Math.abs( hero1.getPlayerX / TILESIZE - START_X) +
+        Math.abs( hero1.getPlayerY / TILESIZE - START_Y);
     if( Math.random() * 5 < 1){
       EnemyNumber = Math.min(Math.floor( EnemyNumber / gFileMonster.length + EnemyNumber % gFileMonster.length), gFileMonster.length -1);         //敵強化＋上限処理
       //console.log('乱数変更');

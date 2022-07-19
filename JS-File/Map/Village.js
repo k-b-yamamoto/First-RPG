@@ -16,7 +16,7 @@ const villMessage = [                                                           
 ];
 
 function village(vN){                                       //マス効果（村１
-  gHP = gMHP;                                                               //街で休憩
+  hero1.setHp = hero1.getMhp;                                                               //街で休憩
   Save();
   setMessage(villMessage[vN].vM1, villMessage[vN].vM2);
 }

@@ -8,17 +8,17 @@ let recoilDamage;                                           //反動ダメージ
 let stuckNumber;
 let stuck = false;
 
-function Sword(gSword){
+function Sword(){
   kaishin = 0;
   magicAttack = null;
   miracle = 0;
   stuckNumber = null;
   swordAttack = 0;
-  if(gSword == 0){
+  if(hero1.getGSword == 0){
     return;
   }
   
-  if(gSword == 1){                                 //奇跡の剣攻撃処理
+  if(hero1.getGSword  == 1){                                 //奇跡の剣攻撃処理
     kaishin = Math.floor(Math.random() * 5);
     //console.log('会心数' + kaishin);
     if(kaishin == 1){
@@ -36,7 +36,7 @@ function Sword(gSword){
     }
   }
   
-  if(gSword == 2){                                 //勇者の剣攻撃処理
+  if(hero1.getGSword == 2){                                 //勇者の剣攻撃処理
     swordAttack = Math.floor(25 + Math.random() * 11);
     kaishin = Math.floor(Math.random() * 10);
     stuckNumber = Math.floor(Math.random() * 5);
@@ -46,7 +46,7 @@ function Sword(gSword){
     return;
   }
 
-  if(gSword == 3){                                 //ヒュドラの魔剣 攻撃処理
+  if(hero1.getGSword  == 3){                                 //ヒュドラの魔剣 攻撃処理
     magicAttack = Math.floor(Math.random() * 3);
     //console.log('魔法攻撃判定 ' + magicAttack);
     if(magicAttack == 1){
