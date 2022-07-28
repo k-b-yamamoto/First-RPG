@@ -21,9 +21,9 @@ function HeroAttack(){
   if( d <= 0){
     setMessage('ミス！', '攻撃が効かない');
   } else if(IsBossClass){
-    setMessage('勇者の攻撃！', gFileBossClass[BossClassNumber].name + ' に ' + d + ' のダメージ！');
-    if(Math.floor(Math.random() * 101) > gFileBossClass[BossClassNumber].mHp){
-      gMessage2 = `しかし${gFileBossClass[BossClassNumber].name}は攻撃をかわした！`;
+    setMessage('勇者の攻撃！', boss.getEnemyName + ' に ' + d + ' のダメージ！');
+    if(Math.floor(Math.random() * 101) > boss.getEnemyMHP){
+      gMessage2 = `しかし${boss.getEnemyName}は攻撃をかわした！`;
       d = 0;
       // console.log('ダメージ = ' + d);
     }
@@ -54,10 +54,10 @@ function MonsterAttack(){
   if(IsBossClass){
     BossPower(BossClassNumber);
     //console.log('dSP = ' + dSP);
-    let avoidJudge = Math.floor(Math.random() * (Math.floor(gFileBossClass[BossClassNumber].mHp / 5)));
+    let avoidJudge = Math.floor(Math.random() * (Math.floor(boss.getEnemyMHP / 5)));
     //console.log("gavoid = " + gAvoid);
     //console.log("avoidjudge = " + avoidJudge);
-    setMessage( gFileBossClass[BossClassNumber].name + ' の攻撃！', dSP + ' のダメージ！');
+    setMessage( boss.getEnemyName + ' の攻撃！', dSP + ' のダメージ！');
     if(Math.floor(hero1.getGAvoid) > avoidJudge){
       dSP = 0;
       gMessage2 = 'しかし勇者はヒラリとかわした！';
@@ -78,15 +78,15 @@ function MonsterAttack(){
 function StuckEffect(gSword){
   if(gSword == 2){
     if(IsTrueBoss == 2){
-      setMessage( gFileBossClass[BossClassNumber].name + ' は', 'こちらの剣を悲しげに見つめている');          
+      setMessage( boss.getEnemyName + ' は', 'こちらの剣を悲しげに見つめている');          
     } else if(IsBossClass){
-      setMessage( gFileBossClass[BossClassNumber].name + 'は', '剣の威力にひるんで動けない');          
+      setMessage( boss.getEnemyName + 'は', '剣の威力にひるんで動けない');          
     } else {
       setMessage( monster.getEnemyName + 'は', '剣の威力にひるんで動けない！');          
     }  
   } else if(gSword == 3){
     if(IsBossClass){
-      setMessage( gFileBossClass[BossClassNumber].name + 'は', '魔剣の魔力で動けない！');          
+      setMessage( boss.getEnemyName + 'は', '魔剣の魔力で動けない！');          
     } else {
       setMessage( monster.getEnemyName + 'は', '魔剣の魔力で動けない！');          
     }

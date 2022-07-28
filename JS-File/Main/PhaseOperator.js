@@ -77,9 +77,9 @@ function operatePhase(c){
       //console.log('BossClassNumber = ' + BossClassNumber);
       if(BossClassNumber != null){
         if(BossClassNumber == 4){
-          setMessage(gFileBossClass[BossClassNumber].name + ' が動きを止めた', null);
+          setMessage(boss.getEnemyName + ' が動きを止めた', null);
         } else if(BossClassNumber < 4){
-          setMessage(` ${gFileBossClass[BossClassNumber].name} をやっつけた！`, null);
+          setMessage(` ${boss.getEnemyName} をやっつけた！`, null);
         }
       } else {
         //console.log('T = ' + EnemyNumber);
@@ -101,7 +101,7 @@ function operatePhase(c){
           gCursor = 0;
         }
       } else if(IsBossClass){
-        GetExp(gBossMHP);
+        GetExp(boss.getEnemyMHP);
       } else {
         GetExp((EnemyNumber + 1)* 3 + Math.floor(Math.random() * 4));
       }

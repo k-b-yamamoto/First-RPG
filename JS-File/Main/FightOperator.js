@@ -4,6 +4,7 @@ let gSirge = 0;                                             //戦闘時包囲要
 let OrderDice;                                              //戦闘順序決定要素
 //モンスター登場時にmonsterインスタンスを生成するように変更したい。
 const monster = new Monster();                              //モンスターインスタンス
+const boss = new Boss();
 
 function CommandFight(){
   gPhase = 2;                                        //戦闘コマンド選択フェーズ
@@ -11,7 +12,10 @@ function CommandFight(){
   stuck = false;
   if(IsBossClass){
     setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard);
-    setBossHP(BossClassNumber);
+    boss.setEnemyName = BossClassNumber;
+    boss.setEnemyMHp = BossClassNumber;
+    boss.setEnemyHp = boss.getEnemyMHP;
+    console.log('Bossインスタンスをsetしました')
   } else {
     setMonsterNumber();
     console.log('EnemyNumber = ' + EnemyNumber);
@@ -62,8 +66,9 @@ function operateFight(gOrder){
       //console.log('現在のターンは ' + gPhase);
       HeroAttack();                                                 //勇者の攻撃処理
       if(IsBossClass){                                               //ボスクラスダメージ処理
-        gBossHP -= Math.max(d, -1);
-        if(gBossHP <= 0){
+        boss.setEnemyHp = boss.getEnemyHP - Math.max(d, -1);
+        console.log('ターン4終了時の敵HP = ' + monster.getEnemyHP);
+        if(boss.getEnemyHP <= 0){
           gPhase = 7;
           return;
         }

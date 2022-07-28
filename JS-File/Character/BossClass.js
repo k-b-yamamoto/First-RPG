@@ -58,6 +58,16 @@ function BossEvent(){
   return;
 }
 
+class Boss extends Monster{
+  set setEnemyMHp(BossClassNumber){
+    this.gEnemyMHP = gFileBossClass[BossClassNumber].mHp;                             //敵のHP設定
+  }
+  set setEnemyName(BossClassNumber){
+    this.gEnemyName = gFileBossClass[BossClassNumber].name;
+  }
+
+}
+
 
 function setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard){
   if(IsBoss == 1){
@@ -76,12 +86,6 @@ function setBossNumber(IsBoss, IsMid_Boss, IsTrueBoss, gGuard){
     BossClassNumber = 4;
   }
   return BossClassNumber;
-}
-
-function setBossHP(BossClassNumber){
-  //console.log('BN = ' + BossClassNumber);
-  gBossMHP = gFileBossClass[BossClassNumber].mHp;
-  gBossHP = gBossMHP;
 }
 
 function getBossMessage(BossClassNumber, gPhase){
