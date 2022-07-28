@@ -9,6 +9,22 @@ let M2;                                                     //ボスメッセー
 let BossClassNumber;                                                     //ボスクラス引数
 let gImgBossClass;                                        //ボス級画像
 
+// const Boss = class{
+//   get getBossHP(){
+//     return this.gBossHP;
+//   }
+//   set setBossHP(gBossHP){
+//     this.gBossHP = gBossHP;
+//   }
+
+//   get getDSP(){
+//     return this.dSP;
+//   }
+//   set setDSP(dSP){
+//     this.dSP = dSP;
+//   }
+// }
+
 const gFileBossClass = [
   {name : '魔王デマオン', url : 'Image/monster-image/m49.png', mHp : 100},            //ボス画像
   {name : '魔塔の番犬', url :'Image/monster-image/m50.png', mHp : 35},              //門番１

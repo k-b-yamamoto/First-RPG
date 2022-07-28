@@ -1,6 +1,5 @@
 'use strict';
 
-let gImgMonster;                                            //モンスター画像
 let EnemyNumber = null;                                               //モンスター引数
 
 
@@ -16,9 +15,53 @@ const gFileMonster = [
   { name: 'オーディン', url : "Image/monster-image/m62.png"},
   { name:'ヒュドラ', url : "Image/monster-image/m65.png" }
 ];                                                                      //モンスター画像
-
+let gImgMonster;                                            //モンスター画像
+let gEnemyName;
 let gEnemyHP ;                                              //敵のHP設定
 let gEnemyMHP;                                              //敵の初期HP
+
+const Monster = class{
+
+  get getEnemyHP(){
+    return this.gEnemyHP;
+  }
+  set setEnemyHp(gEnemyHP){
+    this.gEnemyHP = gEnemyHP;
+    console.log('monsterのHPを' + gEnemyHP + 'に変更しました');
+  }
+
+  get getEnemyMHP(){
+    return this.gEnemyMHP;
+  }
+  set setEnemyMHp(EnemyNumber){
+    this.gEnemyMHP = EnemyNumber * 3 + 5;                             //敵のHP設定
+  }
+
+  get getEnemyName(){
+    return this.gEnemyName;
+  }
+  set setEnemyName(EnemyNumber){
+    this.gEnemyName = gFileMonster[EnemyNumber].name;
+  }
+
+  get getGImgEnemy(){
+    return this.gImgEnemy;
+  }
+  // set setGImgEnemy(EnemyNumber){
+  //   this.gImgEnemy = gFileMonster[EnemyNumber].url;
+  // }
+
+  // constructor(EnemyNumber){
+  //   console.log('EnemyNumber = ' + EnemyNumber);
+  //   // gImgEnemy = setGImgEnemy(EnemyNumber);
+  //   gEnemyName = gFileMonster[EnemyNumber].name;
+  //   gEnemyMHP = EnemyNumber * 3 + 5;
+  //   gEnemyHP = gEnemyMHP;
+  //   // monster.setEnemyName(EnemyNumber);
+  //   // monster.setEnemyMHp(EnemyNumber);
+  //   // monster.setEnemyHp(gEnemyMHP);
+  // }
+}
 
 function AppearEnemy(){
   gPhase = 1;                                          //敵出現フェイズ
@@ -34,16 +77,16 @@ function AppearEnemy(){
 }
 
 
-function setEnemyHp(EnemyNumber){
-  gEnemyMHP = EnemyNumber * 3 + 5;                             //敵のHP設定
-  gEnemyHP = gEnemyMHP;
-  return;
-}
+// function setEnemyHp(EnemyNumber){
+//   gEnemyMHP = EnemyNumber * 3 + 5;                             //敵のHP設定
+//   gEnemyHP = gEnemyMHP;
+//   return;
+// }
 
 function setMonsterNumber(){                            //敵のランダム選択と描画
-  if(EnemyNumber === null){
-    EnemyNumber = Math.abs( gPlayerX / TILESIZE - START_X) +
-        Math.abs( gPlayerY / TILESIZE - START_Y);
+  if(EnemyNumber == null){
+    EnemyNumber = Math.abs( hero1.getPlayerX / TILESIZE - START_X) +
+        Math.abs( hero1.getPlayerY / TILESIZE - START_Y);
     if( Math.random() * 5 < 1){
       EnemyNumber = Math.min(Math.floor( EnemyNumber / gFileMonster.length + EnemyNumber % gFileMonster.length), gFileMonster.length -1);         //敵強化＋上限処理
       //console.log('乱数変更');
@@ -67,6 +110,7 @@ function setMonsterNumber(){                            //敵のランダム選�
 }
 
 function DrawMonster(EnemyNumber,g){
-  gImgMonster = new Image(); gImgMonster.src = gFileMonster[EnemyNumber].url; //モンスター画像読み込み    
+  gImgMonster = new Image(); 
+  gImgMonster.src = gFileMonster[EnemyNumber].url; //モンスター画像読み込み    
   g.drawImage( gImgMonster, WIDTH / 2 - gImgMonster.width / 4, HEIGHT / 2 - gImgMonster.height / 4, gImgMonster.width / 2, gImgMonster.height / 2);
 }
